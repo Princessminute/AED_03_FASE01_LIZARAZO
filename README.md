@@ -1,2 +1,2 @@
 # AED_03
-Repositorio para el proyecto AED_03.
+Repositorio para el curso AED_03.
