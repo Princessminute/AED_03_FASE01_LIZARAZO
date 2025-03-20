@@ -8,11 +8,12 @@ public class Principal {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("********************************************");
-        System.out.println("Bienvenido al Programa Modificado");
+        System.out.println("Bienvenido al Programa mejorado de la actividad 01");
         System.out.println("********************************************");
 
         System.out.println("Ingrese el número máximo de rectángulos a almacenar: ");
         int maxRectangulos = scanner.nextInt();
+        
         ContainerRect contenedor = new ContainerRect(maxRectangulos);
 
         for (int i = 0; i < maxRectangulos; i++) {
@@ -30,8 +31,8 @@ public class Principal {
             contenedor.agregarRectangulo(rect);
         }
 
-        System.out.println("\nInformación de los rectángulos:");
-        contenedor.mostrarInfoRectangulos();
+        System.out.println("\nInformación de los rectángulos almacenados:");
+        System.out.println(contenedor.toString());  
 
         Verificador verificador = new Verificador();
         for (int i = 0; i < maxRectangulos - 1; i++) {
@@ -54,5 +55,6 @@ public class Principal {
         scanner.close();
     }
 }
+
 
 
