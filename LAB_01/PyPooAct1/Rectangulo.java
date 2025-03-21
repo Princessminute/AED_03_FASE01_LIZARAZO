@@ -25,14 +25,6 @@ public class Rectangulo {
         return this.esquina2;
     }
 
-    /* 
-    @Override
-    public String toString() {
-        return "Esquina 1: " + this.esquina1.toString() + ", Esquina 2: " + this.esquina2.toString();
-    }
-    */
-
-    
     public double calculoArea() {
         double largo = Math.abs(esquina2.getX() - esquina1.getX());
         double ancho = Math.abs(esquina2.getY() - esquina1.getY());
