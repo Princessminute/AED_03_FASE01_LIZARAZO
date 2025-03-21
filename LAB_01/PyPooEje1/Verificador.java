@@ -14,9 +14,9 @@ public class Verificador {
             return 0;
         }
 
-        double largo = xDerecha - xIzquierda;
-        double ancho = ySuperior - yInferior;
-        return largo * ancho;
+        double base = xDerecha - xIzquierda;
+        double altura = ySuperior - yInferior;
+        return base * altura;
     }
 
     public boolean seSobreponen(Rectangulo A, Rectangulo B) {
