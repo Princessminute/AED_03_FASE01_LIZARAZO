@@ -5,7 +5,7 @@ public class ContainerRect {
     private double[] distancias;
     private double[] areas;
     private int n;
-    private static int numRec = 0;
+    private static int numRec = 0; //contador
 
     public ContainerRect(int maxRectangulos) {
         this.n = maxRectangulos;

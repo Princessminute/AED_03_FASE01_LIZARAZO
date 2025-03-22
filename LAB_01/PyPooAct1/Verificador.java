@@ -61,3 +61,27 @@ public class Verificador {
 }
     
 
+
+/*
+public double areaDeInterseccion(Rectangulo A, Rectangulo B) {
+        double xIzquierda = Math.max(A.getEsquina1().getX(), B.getEsquina1().getX()); //6 - 7 = 7
+        double xDerecha = Math.min(A.getEsquina2().getX(), B.getEsquina2().getX()); // 8 - 4 = 4
+        double yInferior = Math.max(Math.min(A.getEsquina1().getY(), A.getEsquina2().getY()), // Para el a calculo y superior
+                                    Math.min(B.getEsquina1().getY(), B.getEsquina2().getY())); // lo mismp
+        double ySuperior = Math.min(Math.max(A.getEsquina1().getY(), A.getEsquina2().getY()),
+                                    Math.max(B.getEsquina1().getY(), B.getEsquina2().getY()));
+
+        if (xIzquierda >= xDerecha || yInferior >= ySuperior) {
+            return 0;
+        }
+
+        double base = xDerecha - xIzquierda;
+        double altura = ySuperior - yInferior;
+        return base * altura;
+    }
+ * 
+ * 
+ * 
+ * for esquina1
+ * 
+ */

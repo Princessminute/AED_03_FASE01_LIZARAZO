@@ -6,6 +6,7 @@ public class Principal {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        // añadir una condicional donde pida que los usuarios si o si
         System.out.println("********************************************");
         System.out.println("Bienvenido al Programa de la Actividad 01");
         System.out.println("********************************************");
@@ -44,7 +45,10 @@ public class Principal {
         } else if (verificador.sonDisjuntos(rectanguloA, rectanguloB)) {
             System.out.println("Caso 3: Los rectángulos A y B son disjuntos.");
         }
-        
+
         scanner.close();
     }
 }
+
+
+
