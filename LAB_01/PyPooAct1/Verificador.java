@@ -44,15 +44,15 @@ public class Verificador {
         return areaDeInterseccion(A, B) == 0 && !estanJuntos(A, B);
     }
 
-    public Rectangulo rectanguloSobre(Rectangulo A, Rectangulo B) {
+    public Rectangulo rectanguloSobre(Rectangulo A, Rectangulo B) { //resultante de la intersección
         double xIzquierda = Math.max(A.getEsquina1().getX(), B.getEsquina1().getX());
-        double xDerecha = Math.min(A.getEsquina2().getX(), B.getEsquina2().getX());
+        double xDerecha = Math.min(A.getEsquina2().getX(), B.getEsquina2().getX()); //cordenadas horizontales
         double yInferior = Math.max(Math.min(A.getEsquina1().getY(), A.getEsquina2().getY()),
                                     Math.min(B.getEsquina1().getY(), B.getEsquina2().getY()));
         double ySuperior = Math.min(Math.max(A.getEsquina1().getY(), A.getEsquina2().getY()),
-                                    Math.max(B.getEsquina1().getY(), B.getEsquina2().getY()));
+                                    Math.max(B.getEsquina1().getY(), B.getEsquina2().getY())); //cordenadas verticales
 
-        if (xIzquierda >= xDerecha || yInferior >= ySuperior) {
+        if (xIzquierda >= xDerecha || yInferior >= ySuperior) { //no hay resultante
             return null;
         }
 
