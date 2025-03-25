@@ -8,7 +8,7 @@ public class Principal {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("********************************************");
-        System.out.println("Bienvenido al Programa mejorado de la actividad 01");
+        System.out.println("Bienvenido al Programa del ejercicio 01");
         System.out.println("********************************************");
 
         System.out.println("Ingrese el número máximo de rectángulos a almacenar: ");
