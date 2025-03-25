@@ -6,7 +6,7 @@ public class Verificador {
         double xIzquierda = Math.max(A.getEsquina1().getX(), B.getEsquina1().getX()); //6 - 7 = 7
         double xDerecha = Math.min(A.getEsquina2().getX(), B.getEsquina2().getX()); // 8 - 4 = 4
         double yInferior = Math.max(Math.min(A.getEsquina1().getY(), A.getEsquina2().getY()), // Para el a calculo y superior
-                                    Math.min(B.getEsquina1().getY(), B.getEsquina2().getY())); // lo mismp
+                                    Math.min(B.getEsquina1().getY(), B.getEsquina2().getY())); // lo mism0
         double ySuperior = Math.min(Math.max(A.getEsquina1().getY(), A.getEsquina2().getY()),
                                     Math.max(B.getEsquina1().getY(), B.getEsquina2().getY()));
 
