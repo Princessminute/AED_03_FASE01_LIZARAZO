@@ -2,7 +2,7 @@ package LAB_02.EJERCICIOS;
 
 public class Principal {
     public static void main(String[] args) {
-        
+
         Bolsa<Chocolatina> bolsaCho = new Bolsa<>(3);
         bolsaCho.add(new Chocolatina("milka"));
         bolsaCho.add(new Chocolatina("milka"));
@@ -13,7 +13,6 @@ public class Principal {
         bolsaGolo.add(new Golosina("Chicle", 3));
         bolsaGolo.add(new Golosina("Tic Tac", 5));
         
-        // Mostrar contenido de ambas bolsas
         mostrarContenido(bolsaCho, "Chocolatinas");
         mostrarContenido(bolsaGolo, "Golosinas");
     }
