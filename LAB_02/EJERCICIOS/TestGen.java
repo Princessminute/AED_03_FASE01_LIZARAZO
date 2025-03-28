@@ -39,11 +39,11 @@ public class TestGen {
 
         Cajoneria cajoneria = new Cajoneria(5);  
 
-        cajoneria.add(new Caja<>(new Golosina("Chicle", 10), "Rojo"));
-        cajoneria.add(new Caja<>(new Golosina("Caramelo", 15), "Azul"));
-        cajoneria.add(new Caja<>(new Golosina("Chocolate", 50), "Verde"));
-        cajoneria.add(new Caja<>(new Golosina("Galleta", 30), "Amarillo"));
-        cajoneria.add(new Caja<>(new Golosina("Paleta", 20), "Naranja"));
+        cajoneria.add(new Caja<>(new Golosina("Chicle", 10), "Celeste"));
+        cajoneria.add(new Caja<>(new Golosina("Caramelo", 15), "Morado"));
+        cajoneria.add(new Caja<>(new Golosina("Algodón de Azúcar", 50), "Turquesa"));
+        cajoneria.add(new Caja<>(new Golosina("Galleta", 30), "Fucsia"));
+        cajoneria.add(new Caja<>(new Golosina("Tic Tac", 20), "Blanco"));
 
         System.out.println("Contenido de la cajoneria:");
         System.out.println(cajoneria);
@@ -51,18 +51,17 @@ public class TestGen {
         System.out.println("\nBuscar 'Caramelo, 15g' en la cajoneria:");
         System.out.println(cajoneria.search(new Golosina("Caramelo", 15)));
 
-        System.out.println("\nBuscar 'Chocolate, 50g' en la cajoneria:");
-        System.out.println(cajoneria.search(new Golosina("Chocolate", 50)));
+        System.out.println("\nBuscar 'Algodón de Azúcar, 50g' en la cajoneria:");
+        System.out.println(cajoneria.search(new Golosina("Algodón de Azúcar", 50)));
 
-        System.out.println("\nBuscar 'Paleta, 30g' en la cajoneria:");
-        System.out.println(cajoneria.search(new Golosina("Paleta", 30))); //PESO INCORRECTO
+        System.out.println("\nBuscar 'Tic Tac, 30g' en la cajoneria:");
+        System.out.println(cajoneria.search(new Golosina("Tic Tac", 30))); //PESO INCORRECTO
 
         System.out.println("\nEliminar 'Galleta, 30g' de la cajoneria:");
         cajoneria.delete(new Golosina("Galleta", 30));
 
         System.out.println("\nContenido de la cajoneria después de la eliminación:");
         System.out.println(cajoneria);
-    
     }
 }
 
