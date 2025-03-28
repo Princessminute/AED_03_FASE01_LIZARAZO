@@ -62,6 +62,7 @@ public class TestGen {
 
         System.out.println("\nContenido de la cajoneria después de la eliminación:");
         System.out.println(cajoneria);
+
     }
 }
 
