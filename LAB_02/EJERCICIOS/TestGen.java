@@ -20,6 +20,7 @@ public class TestGen {
         return false; 
     }
     public static void main(String[] args) {
+        /* 
         String[] v = {"Perez", "Sanchez", "Rodriguez"};
         Integer[] w = {12, 34, 56};
 
@@ -34,6 +35,34 @@ public class TestGen {
         System.out.println(exist(g, new Golosina("Chicle", 5))); 
         System.out.println(exist(g1, new Chocolatina("Milka"))); 
         System.out.println(exist(g1, new Chocolatina("Nestle"))); 
+        */
+
+        Cajoneria cajoneria = new Cajoneria(5);  
+
+        cajoneria.add(new Caja<>(new Golosina("Chicle", 10), "Rojo"));
+        cajoneria.add(new Caja<>(new Golosina("Caramelo", 15), "Azul"));
+        cajoneria.add(new Caja<>(new Golosina("Chocolate", 50), "Verde"));
+        cajoneria.add(new Caja<>(new Golosina("Galleta", 30), "Amarillo"));
+        cajoneria.add(new Caja<>(new Golosina("Paleta", 20), "Naranja"));
+
+        System.out.println("Contenido de la cajoneria:");
+        System.out.println(cajoneria);
+
+        System.out.println("\nBuscar 'Caramelo, 15g' en la cajoneria:");
+        System.out.println(cajoneria.search(new Golosina("Caramelo", 15)));
+
+        System.out.println("\nBuscar 'Chocolate, 50g' en la cajoneria:");
+        System.out.println(cajoneria.search(new Golosina("Chocolate", 50)));
+
+        System.out.println("\nBuscar 'Paleta, 30g' en la cajoneria:");
+        System.out.println(cajoneria.search(new Golosina("Paleta", 30))); //PESO INCORRECTO
+
+        System.out.println("\nEliminar 'Galleta, 30g' de la cajoneria:");
+        cajoneria.delete(new Golosina("Galleta", 30));
+
+        System.out.println("\nContenido de la cajoneria después de la eliminación:");
+        System.out.println(cajoneria);
+    
     }
 }
 
