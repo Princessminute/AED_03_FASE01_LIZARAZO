@@ -2,24 +2,38 @@ package LAB_02.EJERCICIOS;
 
 public class PrincipalCajonera2 {
     public static void main(String[] args) {
-        Caja<Integer> cajaDeEnteros = new Caja<>(42, "Rojo");
-        Caja<String> cajaDeCadenas = new Caja<>("Hola Mundo", "Azul");
-        Caja<Double> cajaDeDoubles = new Caja<>(3.14, "Verde");
-
+        Caja<Integer> cajaEnteros = new Caja<>(327, "Rosa");
+        Caja<String> cajaCadenas = new Caja<>("Danhia", "Celeste");
+        Caja<Double> cajaDecimales = new Caja<>(5.5, "Naranja");
+        
         Cajoneria cajoneria = new Cajoneria(3);
-        
-        cajoneria.add(cajaDeEnteros);
-        cajoneria.add(cajaDeCadenas);
-        cajoneria.add(cajaDeDoubles);
 
+        cajoneria.add(cajaEnteros);
+        cajoneria.add(cajaCadenas);
+        cajoneria.add(cajaDecimales);
+
+        System.out.println("Estado inicial de la cajonería:");
         System.out.println(cajoneria.toString());
 
-        System.out.println("Buscar el objeto 'Hola Mundo': " + cajoneria.search("Hola Mundo"));
-        System.out.println("Buscar el objeto 99: " + cajoneria.search(99));  // No existe
+        System.out.println("\nBuscar el objeto 'Danhia':");
+        System.out.println(cajoneria.search("Danhia"));
 
-        System.out.println("Eliminar el objeto 3.14: " + cajoneria.delete(3.14));
-        
+        System.out.println("\nBuscar el objeto 'Adiós':");
+        System.out.println(cajoneria.search("Adiós"));
+
+        System.out.println("\nEliminar el objeto 5.5:");
+        cajoneria.delete(3.14);
+
+        System.out.println("\nEstado de la cajonería después de eliminar 5.5:");
         System.out.println(cajoneria.toString());
+
+        System.out.println("\nIntentar eliminar el objeto 42:");
+        cajoneria.delete(42);
     }
 }
 
+
+
+
+
+ 
