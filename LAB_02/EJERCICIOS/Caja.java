@@ -1,6 +1,7 @@
 package LAB_02.EJERCICIOS;
 
 public class Caja<T> {
+    
     private T contenido;
     private String color;
 
@@ -24,6 +25,7 @@ public class Caja<T> {
     public void establecerColor(String color) {
         this.color = color;
     }
+    
 }
 
 
