@@ -22,7 +22,7 @@ public class PrincipalCajonera2 {
         System.out.println(cajoneria.search("Adiós"));
 
         System.out.println("\nEliminar el objeto 5.5:");
-        cajoneria.delete(3.14);
+        cajoneria.delete(5.5);
 
         System.out.println("\nEstado de la cajonería después de eliminar 5.5:");
         System.out.println(cajoneria.toString());
