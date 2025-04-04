@@ -2,7 +2,7 @@ package LAB_03;
 
 import java.util.Arrays;
 
-public class MergeSortOptimizado {
+public class MSOptimizado {
     public static void mergeSort(int[] arr) {
         int[] aux = new int[arr.length]; // Arreglo auxiliar reutilizable
         mergeSort(arr, aux, 0, arr.length - 1);

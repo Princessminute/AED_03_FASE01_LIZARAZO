@@ -2,7 +2,7 @@ package LAB_03;
 
 import java.util.Arrays;
 
-public class MergeSort {
+public class FusionarOrdenar {
     public static void mergeSort(int[] arr) {
         if (arr.length < 2) {
             return; // Caso base: el arreglo ya está ordenado si tiene un solo elemento
