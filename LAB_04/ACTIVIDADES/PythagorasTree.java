@@ -2,14 +2,13 @@ package LAB_04.ACTIVIDADES;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class PythagorasTree extends JPanel {
     private int profundidad;
 
     public PythagorasTree(int profundidad) {
         this.profundidad = profundidad;
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(1200, 1200));
         setBackground(Color.BLACK);
     }
 
@@ -22,7 +21,12 @@ public class PythagorasTree extends JPanel {
 
         g2d.setColor(Color.GREEN);
 
-        trazaArbol(g2d, 400, 700, 100, -90, profundidad);
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int centerX = panelWidth / 2;
+        int centerY = panelHeight - 100;
+
+        trazaArbol(g2d, centerX, centerY, 120, -90, profundidad);
     }
 
     private void trazaArbol(Graphics2D g, double x, double y, double lado, double angulo, int nivel) {
@@ -41,5 +45,4 @@ public class PythagorasTree extends JPanel {
         trazaArbol(g, x2, y2, nuevoLado, angulo - 45, nivel - 1);
         trazaArbol(g, x2, y2, nuevoLado, angulo + 45, nivel - 1);
     }
-
 }

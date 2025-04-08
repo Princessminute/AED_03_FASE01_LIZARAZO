@@ -5,8 +5,9 @@ import javax.swing.*;
 public class PythagorasMain {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            crearVentana("Árbol de Pitágoras - Nivel 6", 6);
-            crearVentana("Árbol de Pitágoras - Nivel 8", 8);
+            //crearVentana("Árbol de Pitágoras - Nivel 3", 3);
+            //crearVentana("Árbol de Pitágoras - Nivel 6", 6);
+            //crearVentana("Árbol de Pitágoras - Nivel 8", 8);
             crearVentana("Árbol de Pitágoras - Nivel 10", 10);
         });
     }
