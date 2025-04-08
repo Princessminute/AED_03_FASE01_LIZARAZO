@@ -1,5 +1,4 @@
 package LAB_04.ACTIVIDADES;
-
 public class NaiveSolution {
     static int getValue(int[] values, int length) {
         if (length <= 0)
@@ -12,9 +11,18 @@ public class NaiveSolution {
     }
     
     public static void main(String[] args) {
-        int[] values = new int[]{3, 7, 1, 3, 9};  // Precios de las piezas
+        int[] values = new int[]{3, 7, 1, 3, 9};
         int rodLength = values.length;
+        
+        long startTime = System.nanoTime();
+        
         System.out.println("El valor máximo: " + getValue(values, rodLength));
+        
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        
+        System.out.println("Tiempo transcurrido: " + duration + " nanosegundos.");
     }
 }
+
 
