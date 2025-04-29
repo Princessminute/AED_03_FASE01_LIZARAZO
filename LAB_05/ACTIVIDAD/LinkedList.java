@@ -34,6 +34,7 @@ public class LinkedList<C> {
         size++;
     }
 
+    //hasta que sea nulo que cuente los elementos
     public int count() {
         return size;
     }
