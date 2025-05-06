@@ -10,8 +10,6 @@ public class MainActividad {
 
         gestor.imprimirTareas();
 
-//datestruction and problems 
-//Guía y exlicar lo que haces. Diapositivas o trabajo bien hecho 
 
         gestor.eliminarTarea(new TareaActividad("Revisar informe", 2));
 

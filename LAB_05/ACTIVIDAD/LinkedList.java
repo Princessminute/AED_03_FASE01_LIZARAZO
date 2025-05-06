@@ -2,22 +2,19 @@ package LAB_05.ACTIVIDAD;
 
 public class LinkedList<C> {
     private Node<C> head;
-    private int size;
 
     public LinkedList() {
         this.head = null;
-        this.size = 0;
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return head == null;
     }
 
     public void addFirst(C data) {
         Node<C> newNode = new Node<>(data);
         newNode.next = head;
         head = newNode;
-        size++;
     }
 
     public void addLast(C data) {
@@ -31,12 +28,17 @@ public class LinkedList<C> {
             }
             current.next = newNode;
         }
-        size++;
     }
 
-    //hasta que sea nulo que cuente los elementos
+    // Cuenta los elementos recorriendo la lista
     public int count() {
-        return size;
+        int count = 0;
+        Node<C> current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
     }
 
     public void printIsEmpty() {
@@ -53,6 +55,18 @@ public class LinkedList<C> {
                 current = current.next;
             }
             System.out.println();
+        }
+    }
+
+    // Clase lógica de soporte Node
+    // El usuario final no la ve
+    private static class Node<C> {
+        C data;
+        Node<C> next;
+
+        Node(C data) {
+            this.data = data;
+            this.next = null;
         }
     }
 }
