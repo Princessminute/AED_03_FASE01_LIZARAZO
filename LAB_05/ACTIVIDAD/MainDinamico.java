@@ -4,57 +4,97 @@ import java.util.Scanner;
 
 public class MainDinamico {
 
-    private static void procesarEntrada(String linea, GestionarTareas<TareaActividad> gestor) {
-        String[] tokens = linea.trim().split(" ");
-        
-        if (tokens.length < 2) {
-            System.out.println("Entrada inválida. Por favor ingresa una tarea con su prioridad.");
-            return;
-        }
+    private static void procesarEntrada(int cantidad, GestionarTareas<TareaActividad> gestor, Scanner sc) {
+        for (int i = 0; i < cantidad; i++) {
+            System.out.print("Ingresa la descripción de la tarea: ");
+            String descripcion = sc.nextLine();
+            System.out.print("Ingresa la prioridad de la tarea (número entero): ");
+            int prioridad = Integer.parseInt(sc.nextLine());
 
-        String descripcion = tokens[0];
-        int prioridad;
-        
-        try {
-            prioridad = Integer.parseInt(tokens[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Error: La prioridad debe ser un número entero.");
-            return;
+            TareaActividad tarea = new TareaActividad(descripcion, prioridad);
+            gestor.agregarTarea(tarea);
+            System.out.println("Tarea agregada: " + tarea);
         }
-
-        TareaActividad tarea = new TareaActividad(descripcion, prioridad);
-        gestor.agregarTarea(tarea);
-        System.out.println("Tarea agregada: " + tarea);
     }
 
-    private static void ejecutarPruebas(GestionarTareas<TareaActividad> gestor) {
-        System.out.println("\nEjecutando pruebas de ejemplo...");
+    private static void mostrarMenuTareas(GestionarTareas<TareaActividad> gestor, Scanner sc) {
+        int opcion;
 
-        gestor.agregarTarea(new TareaActividad("Enviar correo", 3));
-        gestor.agregarTarea(new TareaActividad("Revisar informe", 2));
-        gestor.agregarTarea(new TareaActividad("Reunión con cliente", 1));
+        do {
+            System.out.println("\n--- MENÚ DE TAREAS ---");
+            System.out.println("1. Comparar dos tareas");
+            System.out.println("2. Eliminar una tarea");
+            System.out.println("3. Marcar una tarea como completada");
+            System.out.println("4. Imprimir todas las tareas");
+            System.out.println("0. Regresar al menú principal");
+            System.out.print("Elige una opción: ");
+            opcion = sc.nextInt();
+            sc.nextLine(); // Para limpiar el buffer del scanner
 
-        System.out.println("\nTareas agregadas:");
-        gestor.imprimirTareas();
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingresa la descripción de la primera tarea: ");
+                    String descripcion1 = sc.nextLine();
+                    System.out.print("Ingresa la prioridad de la primera tarea: ");
+                    int prioridad1 = Integer.parseInt(sc.nextLine());
+                    TareaActividad tarea1 = new TareaActividad(descripcion1, prioridad1);
 
-        gestor.eliminarTarea(new TareaActividad("Revisar informe", 2));
-        System.out.println("\nTareas después de eliminar 'Revisar informe':");
-        gestor.imprimirTareas();
+                    System.out.print("Ingresa la descripción de la segunda tarea: ");
+                    String descripcion2 = sc.nextLine();
+                    System.out.print("Ingresa la prioridad de la segunda tarea: ");
+                    int prioridad2 = Integer.parseInt(sc.nextLine());
+                    TareaActividad tarea2 = new TareaActividad(descripcion2, prioridad2);
 
-        System.out.println("\n¿Existe 'Enviar correo'? " +
-                gestor.contieneTarea(new TareaActividad("Enviar correo", 3)));
+                    int resultadoComparacion = tarea1.compareTo(tarea2);
+                    if (resultadoComparacion < 0) {
+                        System.out.println("La tarea '" + tarea1.getTitulo() + "' tiene mayor prioridad que '" + tarea2.getTitulo() + "'.");
+                    } else if (resultadoComparacion > 0) {
+                        System.out.println("La tarea '" + tarea2.getTitulo() + "' tiene mayor prioridad que '" + tarea1.getTitulo() + "'.");
+                    } else {
+                        System.out.println("Ambas tareas tienen la misma prioridad.");
+                    }
+                    break;
 
-        System.out.println("Tarea más prioritaria: " + gestor.obtenerTareaMasPrioritaria());
+                case 2:
+                    System.out.print("Ingresa la descripción de la tarea a eliminar: ");
+                    String descripcionEliminar = sc.nextLine();
+                    System.out.print("Ingresa la prioridad de la tarea a eliminar: ");
+                    int prioridadEliminar = Integer.parseInt(sc.nextLine());
+                    TareaActividad tareaEliminar = new TareaActividad(descripcionEliminar, prioridadEliminar);
 
-        gestor.invertirTareas();
-        System.out.println("\nTareas invertidas:");
-        gestor.imprimirTareas();
+                    if (gestor.eliminarTarea(tareaEliminar)) {
+                        System.out.println("Tarea eliminada: " + tareaEliminar);
+                    } else {
+                        System.out.println("No se encontró la tarea.");
+                    }
+                    break;
 
-        gestor.transferirTareaACompletadas(new TareaActividad("Enviar correo", 3));
-        System.out.println("\nTareas actuales después de transferir 'Enviar correo' a completadas:");
-        gestor.imprimirTareas();
+                case 3:
+                    System.out.print("Ingresa la descripción de la tarea a marcar como completada: ");
+                    String descripcionCompletada = sc.nextLine();
+                    System.out.print("Ingresa la prioridad de la tarea a marcar como completada: ");
+                    int prioridadCompletada = Integer.parseInt(sc.nextLine());
+                    TareaActividad tareaCompletada = new TareaActividad(descripcionCompletada, prioridadCompletada);
 
-        gestor.mostrarTareasCompletadas();
+                    if (gestor.transferirTareaACompletadas(tareaCompletada)) {
+                        System.out.println("Tarea completada: " + tareaCompletada);
+                    } else {
+                        System.out.println("No se encontró la tarea para completar.");
+                    }
+                    break;
+
+                case 4:
+                    gestor.imprimirTareas();
+                    break;
+
+                case 0:
+                    System.out.println("Regresando al menú principal.");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        } while (opcion != 0);
     }
 
     public static void main(String[] args) {
@@ -63,22 +103,22 @@ public class MainDinamico {
         GestionarTareas<TareaActividad> gestor = new GestionarTareas<>();
 
         do {
-            System.out.println("\n--- MENÚ ---");
-            System.out.println("1. Ingresar tarea manualmente");
-            System.out.println("2. Ejecutar pruebas de ejemplo");
+            System.out.println("\n--- MENÚ PRINCIPAL ---");
+            System.out.println("1. Ingresar tareas manualmente");
+            System.out.println("2. Ejecutar casos de prueba");
             System.out.println("0. Salir");
             System.out.print("Elige una opción: ");
             opcion = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
                 case 1:
-                    System.out.println("NOTA:");
-                    System.out.println("- El primer valor es la descripción de la tarea");
-                    System.out.println("- El segundo valor es la prioridad de la tarea");
-                    System.out.print("Ingresa la tarea y su prioridad (ej. 'Enviar correo 3'): ");
-                    String linea = sc.nextLine();
-                    procesarEntrada(linea, gestor);
+                    // Preguntar cuántas tareas ingresar
+                    System.out.print("¿Cuántas tareas deseas ingresar? ");
+                    int cantidad = sc.nextInt();
+                    sc.nextLine(); // Limpiar el buffer
+                    procesarEntrada(cantidad, gestor, sc);
+                    mostrarMenuTareas(gestor, sc);  // Después de ingresar tareas, mostrar el menú para gestionar
                     break;
 
                 case 2:
@@ -95,5 +135,59 @@ public class MainDinamico {
         } while (opcion != 0);
 
         sc.close();
+    }
+
+    private static void ejecutarPruebas(GestionarTareas<TareaActividad> gestor) {
+        // Pruebas de ejemplo para el caso 2 (con tareas menos comunes)
+        System.out.println("\n--- EJECUTANDO CASOS DE PRUEBA ---");
+
+        // Agregar tareas
+        System.out.println("\nAgregando tareas:");
+        gestor.agregarTarea(new TareaActividad("Desarrollar algoritmo cuántico", 1));
+        gestor.agregarTarea(new TareaActividad("Recopilar ADN de especies extintas", 5));
+        gestor.agregarTarea(new TareaActividad("Planificar lanzamiento de satélite", 3));
+
+        // Imprimir todas las tareas
+        System.out.println("\nTareas después de agregar:");
+        gestor.imprimirTareas();
+
+        // Comparar tareas
+        System.out.println("\nComparando tareas:");
+        TareaActividad tarea1 = new TareaActividad("Desarrollar algoritmo cuántico", 1);
+        TareaActividad tarea2 = new TareaActividad("Planificar lanzamiento de satélite", 3);
+        int resultadoComparacion = tarea1.compareTo(tarea2);
+        if (resultadoComparacion < 0) {
+            System.out.println("La tarea '" + tarea1.getTitulo() + "' tiene mayor prioridad que '" + tarea2.getTitulo() + "'.");
+        } else if (resultadoComparacion > 0) {
+            System.out.println("La tarea '" + tarea2.getTitulo() + "' tiene mayor prioridad que '" + tarea1.getTitulo() + "'.");
+        } else {
+            System.out.println("Ambas tareas tienen la misma prioridad.");
+        }
+
+        // Eliminar tarea
+        System.out.println("\nEliminando tarea:");
+        TareaActividad tareaEliminar = new TareaActividad("Recopilar ADN de especies extintas", 5);
+        if (gestor.eliminarTarea(tareaEliminar)) {
+            System.out.println("Tarea eliminada: " + tareaEliminar);
+        } else {
+            System.out.println("No se encontró la tarea.");
+        }
+
+        // Imprimir tareas restantes
+        System.out.println("\nTareas restantes:");
+        gestor.imprimirTareas();
+
+        // Transferir tarea a completadas
+        System.out.println("\nMarcando tarea como completada:");
+        TareaActividad tareaCompletada = new TareaActividad("Desarrollar algoritmo cuántico", 1);
+        if (gestor.transferirTareaACompletadas(tareaCompletada)) {
+            System.out.println("Tarea completada: " + tareaCompletada);
+        } else {
+            System.out.println("No se encontró la tarea.");
+        }
+
+        // Imprimir tareas completadas
+        System.out.println("\nTareas completadas:");
+        gestor.mostrarTareasCompletadas();
     }
 }
