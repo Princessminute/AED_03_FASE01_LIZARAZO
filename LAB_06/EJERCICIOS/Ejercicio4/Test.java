@@ -84,6 +84,5 @@ public class Test {
             }
         } while (opcion != 0);
     }
-    +
 }
 
