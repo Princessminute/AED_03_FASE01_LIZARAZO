@@ -1,47 +1,59 @@
 package LAB_06.ACTIVIDADES.ACT_3;
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public class Test {
     public static void main(String[] args) {
-        PriorityQueue<String, Integer> cola1 = new PriorityQueueLinkSort<>();
-
         try {
-            cola1.enqueue("Correo urgente", 10);
-            cola1.enqueue("Correo normal", 5);
-            cola1.enqueue("Publicidad", 1);
-            cola1.enqueue("Mensaje importante", 8);
+            System.out.println("==== PRUEBA 1: Cola de prioridad con tareas (String, Integer) ====");
+            PriorityQueue<String, Integer> cola = new PriorityQueueLinkSort<>();
 
-            System.out.println("Cola 1: " + cola1);
+            System.out.println("\n[Encolando elementos]");
+            System.out.println("Agregando 'Tarea baja' con prioridad 1");
+            cola.enqueue("Tarea baja", 1);
+            System.out.println("Agregando 'Tarea media' con prioridad 5");
+            cola.enqueue("Tarea media", 5);
+            System.out.println("Agregando 'Tarea alta' con prioridad 10");
+            cola.enqueue("Tarea alta", 10);
+            System.out.println("Agregando 'Tarea intermedia' con prioridad 7");
+            cola.enqueue("Tarea intermedia", 7);
 
-            System.out.println("Front: " + cola1.front());
-            System.out.println("Back: " + cola1.back());
+            System.out.println("\n[Estado actual de la cola de prioridad]");
+            System.out.println(cola.toString()); // Muestra el orden por prioridad
 
-            System.out.println("Dequeue: " + cola1.dequeue());
-            System.out.println("Cola 1 tras dequeue: " + cola1);
+            System.out.println("\n[Consultando el frente de la cola]");
+            System.out.println("Se espera el elemento con mayor prioridad: " + cola.front());
+
+            System.out.println("\n[Consultando el final de la cola]");
+            System.out.println("Se espera el elemento con menor prioridad: " + cola.back());
+
+            System.out.println("\n[Eliminando el elemento con mayor prioridad]");
+            String eliminado = cola.dequeue();
+            System.out.println("Elemento eliminado: " + eliminado);
+
+            System.out.println("\n[Estado de la cola luego del dequeue]");
+            System.out.println(cola.toString());
+
+            System.out.println("\n¿Está vacía la cola? " + cola.isEmpty());
+
+            System.out.println("\n==== PRUEBA 2: Cola de prioridad con números (Integer, Double) ====");
+            PriorityQueue<Integer, Double> colaNumeros = new PriorityQueueLinkSort<>();
+
+            System.out.println("\n[Encolando números enteros con prioridad double]");
+            System.out.println("Agregando número 100 con prioridad 2.5");
+            colaNumeros.enqueue(100, 2.5);
+            System.out.println("Agregando número 200 con prioridad 7.2");
+            colaNumeros.enqueue(200, 7.2);
+            System.out.println("Agregando número 300 con prioridad 1.1");
+            colaNumeros.enqueue(300, 1.1);
+
+            System.out.println("\n[Estado actual de la cola de números]");
+            System.out.println(colaNumeros.toString());
+
+            System.out.println("\n[Elemento al frente de la cola de números]: " + colaNumeros.front());
+            System.out.println("[Elemento al final de la cola de números]: " + colaNumeros.back());
 
         } catch (ExceptionIsEmpty e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        System.out.println();
-
-        PriorityQueue<Integer, Double> cola2 = new PriorityQueueLinkSort<>();
-
-        try {
-            cola2.enqueue(100, 3.2);
-            cola2.enqueue(50, 7.9);
-            cola2.enqueue(200, 1.5);
-            cola2.enqueue(150, 4.6);
-
-            System.out.println("Cola 2: " + cola2);
-
-            System.out.println("Front: " + cola2.front());
-            System.out.println("Back: " + cola2.back());
-
-            System.out.println("Dequeue: " + cola2.dequeue());
-            System.out.println("Cola 2 tras dequeue: " + cola2);
-
-        } catch (ExceptionIsEmpty e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("\n[ERROR] " + e.getMessage());
         }
     }
 }

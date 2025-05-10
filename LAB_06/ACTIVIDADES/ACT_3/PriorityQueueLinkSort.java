@@ -1,4 +1,5 @@
 package LAB_06.ACTIVIDADES.ACT_3;
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
 

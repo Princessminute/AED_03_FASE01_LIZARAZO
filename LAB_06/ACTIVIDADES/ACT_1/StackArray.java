@@ -1,4 +1,5 @@
 package LAB_06.ACTIVIDADES.ACT_1;
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public class StackArray<C> implements Stack<C> {
     private C[] array;

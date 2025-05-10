@@ -1,4 +1,5 @@
 package LAB_06.ACTIVIDADES.ACT_2;
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public interface Queue <C> {
     void enqueue (C x);

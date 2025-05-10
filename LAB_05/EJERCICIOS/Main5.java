@@ -10,7 +10,7 @@ public class Main5 {
         lista1 = UtilListaEje5.insertarAlFinal(lista1, 3);
 
         lista2 = UtilListaEje5.insertarAlFinal(lista2, 1);
-        lista2 = UtilListaEje5.insertarAlFinal(lista2, 2);
+        lista2 = UtilListaEje5.insertarAlFinal(lista2, 3);
         lista2 =  UtilListaEje5.insertarAlFinal(lista2, 3);
 
         System.out.println("Lista 1:");

@@ -1,4 +1,5 @@
 package LAB_06.ACTIVIDADES.ACT_2;
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public class QueueLink<C> implements Queue<C> {
     private Node<C> primero;
@@ -53,7 +54,6 @@ public class QueueLink<C> implements Queue<C> {
         return sb.toString();
     }
 
-    // Lanzar excepción de forma expresiva
     private C throwEx(String msg) throws ExceptionIsEmpty {
         throw new ExceptionIsEmpty(msg);
     }
