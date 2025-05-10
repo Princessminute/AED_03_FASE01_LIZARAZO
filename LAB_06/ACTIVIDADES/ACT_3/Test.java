@@ -20,12 +20,12 @@ public class Test {
             System.out.println(cola.toString()); // Muestra el orden por prioridad
 
             System.out.println("\n[Consultando el frente de la cola]");
-            System.out.println("Se espera el elemento con **menor número de prioridad** (más urgente): " + cola.front());
+            System.out.println("Se espera el elemento con (más urgente): " + cola.front());
 
             System.out.println("\n[Consultando el final de la cola]");
-            System.out.println("Se espera el elemento con **mayor número de prioridad** (menos urgente): " + cola.back());
+            System.out.println("Se espera el elemento con (menos urgente): " + cola.back());
 
-            System.out.println("\n[Eliminando el elemento con mayor prioridad (numéricamente menor)]");
+            System.out.println("\n[Eliminando el elemento con mayor prioridad (numéricamente MAYOR)]");
             String eliminado = cola.dequeue();
             System.out.println("Elemento eliminado: " + eliminado);
 
@@ -46,6 +46,10 @@ public class Test {
             colaNumeros.enqueue(300, 1.1);
             System.out.println("Agregando número 2 con prioridad 7.2");
             colaNumeros.enqueue(2, 7.2);
+            System.out.println("Agregando número 2 con prioridad 7.2");
+            colaNumeros.enqueue(20, 7.2);
+            System.out.println("Agregando número 2 con prioridad 7.2");
+            colaNumeros.enqueue(1, 7.2);
 
             System.out.println("\n[Estado actual de la cola de números]");
             System.out.println(colaNumeros.toString());

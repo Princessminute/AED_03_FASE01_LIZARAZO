@@ -1,5 +1,6 @@
 package LAB_06.ACTIVIDADES.ACT_3;
 import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
+
 public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
 
     class EntryNode {
@@ -11,6 +12,8 @@ public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
             this.prioridad = prioridad;
         }
     }
+
+
 
     private Node<EntryNode> first;
     private Node<EntryNode> last;
@@ -33,15 +36,17 @@ public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
         dummy.next = first;
         Node<EntryNode> ant = dummy;
 
-        // Cambiar la comparación para insertar en orden de menor a mayor prioridad
-        while (ant.next != null && compare(ant.next.data.prioridad, pr) < 0)
+        // Comparar primero por prioridad (orden descendente: mayor prioridad primero)
+        // Si las prioridades son iguales, mantener el orden de inserción
+       while (ant.next != null && compare(ant.next.data.prioridad, pr) >= 0) // Cambié el > por >=
             ant = ant.next;
+
 
         nodoNuevo.next = ant.next;
         ant.next = nodoNuevo;
 
-        if (nodoNuevo.next == null) last = nodoNuevo;
-        first = dummy.next;
+        if (nodoNuevo.next == null) last = nodoNuevo; // El último elemento es el de menor prioridad
+        first = dummy.next; // El primero es el de mayor prioridad
     }
 
     @Override
@@ -56,13 +61,13 @@ public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
     @Override
     public C front() throws ExceptionIsEmpty {
         if (isEmpty()) throw new ExceptionIsEmpty("Cola vacía - front");
-        return first.data.dato;
+        return first.data.dato;  // Debería devolver el primero, el de mayor prioridad
     }
 
     @Override
     public C back() throws ExceptionIsEmpty {
         if (isEmpty()) throw new ExceptionIsEmpty("Cola vacía - back");
-        return last.data.dato;
+        return last.data.dato;   // Debería devolver el último, el de menor prioridad
     }
 
     @Override
@@ -70,9 +75,10 @@ public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
         return first == null;
     }
 
+    // Comparar solo por prioridad
     @SuppressWarnings("unchecked")
     private int compare(N a, N b) {
-        return ((Comparable<N>) a).compareTo(b);
+        return ((Comparable<N>) a).compareTo(b);  // Comparación de prioridades
     }
 
     @Override
