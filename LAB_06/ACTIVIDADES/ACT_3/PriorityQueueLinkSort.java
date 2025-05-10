@@ -1,6 +1,5 @@
 package LAB_06.ACTIVIDADES.ACT_3;
 import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
-
 public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
 
     class EntryNode {
@@ -34,7 +33,8 @@ public class PriorityQueueLinkSort<C, N> implements PriorityQueue<C, N> {
         dummy.next = first;
         Node<EntryNode> ant = dummy;
 
-        while (ant.next != null && compare(ant.next.data.prioridad, pr) > 0)
+        // Cambiar la comparación para insertar en orden de menor a mayor prioridad
+        while (ant.next != null && compare(ant.next.data.prioridad, pr) < 0)
             ant = ant.next;
 
         nodoNuevo.next = ant.next;
