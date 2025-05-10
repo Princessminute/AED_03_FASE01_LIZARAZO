@@ -1,5 +1,5 @@
 package LAB_06.EJERCICIOS.Ejercicio1;
-
+import LAB_06.EXCEPTIONS.ExceptionIsEmpty;
 
 public class StackLink<T> implements Stack<T> {
     private Node<T> top;
@@ -11,16 +11,16 @@ public class StackLink<T> implements Stack<T> {
     }
 
     @Override
-    public T pop() throws ExcepcionIsEmpty {
-        if (isEmpty()) throw new ExcepcionIsEmpty("La pila está vacía");
+    public T pop() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty("La pila está vacía");
         T data = top.data;
         top = top.previous;
         return data;
     }
 
     @Override
-    public T peek() throws ExcepcionIsEmpty {
-        if (isEmpty()) throw new ExcepcionIsEmpty("La pila está vacía");
+    public T top() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty("La pila está vacía");
         return top.data;
     }
 
