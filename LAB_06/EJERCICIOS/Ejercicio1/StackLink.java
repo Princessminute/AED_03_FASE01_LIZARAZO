@@ -14,7 +14,7 @@ public class StackLink<T> implements Stack<T> {
     public T pop() throws ExceptionIsEmpty {
         if (isEmpty()) throw new ExceptionIsEmpty("La pila está vacía");
         T data = top.data;
-        top = top.previous;
+        top = top.previous; //Pila
         return data;
     }
 
@@ -31,10 +31,20 @@ public class StackLink<T> implements Stack<T> {
 
     @Override
     public void print() {
-        System.out.print("Pila: ");
-        recursivePrint(top);
-        System.out.println();
+        System.out.print("Estado actual de la pila (de base a cima): ");
+        StringBuilder builder = new StringBuilder();
+    Node<T> current = top;
+    while (current != null) {
+        builder.insert(0, "[ " + current.data + " ] <= ");
+        current = current.previous;
     }
+    if (builder.length() > 0) {
+        builder.setLength(builder.length() - 5); // Quitar la última flecha "<= "
+        System.out.println(builder.toString());
+    } else {
+        System.out.println("[ vacía ]");
+    }
+}
 
     private void recursivePrint(Node<T> node) {
         if (node == null) return;

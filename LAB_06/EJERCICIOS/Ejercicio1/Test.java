@@ -10,7 +10,6 @@ public class Test {
         stackInt.push(10);
         stackInt.push(20);
         stackInt.push(30);
-        System.out.print("Estado actual: ");
         stackInt.print();
         try {
             System.out.println("-> Tope actual: " + stackInt.top());
@@ -25,7 +24,6 @@ public class Test {
         stackStr.push("Hola");
         stackStr.push("Mundo");
         stackStr.push("Java");
-        System.out.print("Estado actual: ");
         stackStr.print();
         try {
             System.out.println("-> Tope actual: " + stackStr.top());
@@ -33,7 +31,7 @@ public class Test {
         } catch (ExceptionIsEmpty e) {
             System.out.println("Error: " + e.getMessage());
         }
-        System.out.print("Estado después del pop: ");
+        System.out.print("Déspues del pop: ");
         stackStr.print();
 
         System.out.println("\n=== PILA VACÍA DE DOUBLES ===");
@@ -57,8 +55,7 @@ public class Test {
 
         System.out.println("-> Pushing 2.1 en la pila Double");
         stackDbl.push(2.1);
-        System.out.print("Estado actual de la pila Double: ");
-        stackDbl.print();
+        stackDbl.print(); 
         try {
             System.out.println("-> Tope actual: " + stackDbl.top());
         } catch (ExceptionIsEmpty e) {
