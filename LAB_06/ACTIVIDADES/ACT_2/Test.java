@@ -23,7 +23,7 @@ public class Test {
             System.out.println("Cola actual: " + colaCadenas);
             System.out.println("Elemento al frente: " + colaCadenas.front());
             colaCadenas.dequeue();
-            System.out.println("Añadiendo un nuevo elemento: ");
+            System.out.println("Añadiendo un nuevo elemento: María ");
             colaCadenas.enqueue("María");
             System.out.println("Cola después de cambios: " + colaCadenas);
             System.out.println("Elemento al final: " + colaCadenas.back());
@@ -32,8 +32,8 @@ public class Test {
             Queue<Double> colaDoubles = new QueueLink<>();
             colaDoubles.enqueue(3.14);
             System.out.println("Cola actual: " + colaDoubles);
-            System.out.println("Desencolando: " + colaDoubles.dequeue());
-            System.out.println("Intentando acceder al frente de una cola vacía...");
+            System.out.println("Desencolando: " + colaDoubles.dequeue() + "(Dequeue)");
+            System.out.println("Intentando acceder al frente de una cola vacía");
             colaDoubles.front(); 
 
         } catch (ExceptionIsEmpty e) {
