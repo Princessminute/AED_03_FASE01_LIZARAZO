@@ -32,6 +32,25 @@ public class Test {
             System.out.println("\n[Estado de la cola luego del dequeue]");
             System.out.println(cola.toString());
 
+            String eliminado2 = cola.dequeue();
+            System.out.println("Elemento eliminado: " + eliminado2);
+
+            System.out.println("\n[Estado de la cola luego del dequeue]");
+            System.out.println(cola.toString());
+           
+            String eliminado3 = cola.dequeue();
+            System.out.println("Elemento eliminado: " + eliminado3);
+
+            System.out.println("\n[Estado de la cola luego del dequeue]");
+            System.out.println(cola.toString());
+
+            String eliminado4 = cola.dequeue();
+            System.out.println("Elemento eliminado: " + eliminado4);
+
+            System.out.println("\n[Estado de la cola luego del dequeue]");
+            System.out.println(cola.toString());
+
+
             System.out.println("\n¿Está vacía la cola? " + cola.isEmpty());
 
             System.out.println("\n==== PRUEBA 2: Cola de prioridad con números (Integer, Double) ====");
