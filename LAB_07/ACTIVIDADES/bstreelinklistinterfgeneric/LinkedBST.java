@@ -1,6 +1,5 @@
 package LAB_07.ACTIVIDADES.bstreelinklistinterfgeneric;
 
-import LAB_07.ACTIVIDADES.bstreeInterface.*;
 import LAB_07.EXCEPTION.*;
 
 public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
@@ -211,6 +210,10 @@ private E findMaxNode(Node node) throws ItemNoFound {
 
     return search(current.data);
     }
+    
+
+
+    //-----EJERCICIOS--------------------------------------------
 
 }
 
