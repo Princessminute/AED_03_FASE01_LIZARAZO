@@ -182,7 +182,35 @@ private void recorridoPostOrden(Node node) {
         System.out.println("Vacío");
         }
     }
+//-----NUEVOS MÉTODOS-------------------------------------------
 
+@SuppressWarnings("unused")
+private E findMinNode(Node node) throws ItemNoFound {
+    if (node == null) {
+        throw new ItemNoFound("El árbol o subárbol está vacío. No se puede encontrar el mínimo.");
+        }
+
+    Node current = node;
+    while (current.left != null) {
+        current = current.left;
+        }
+
+    return search(current.data);
+    }
+
+@SuppressWarnings("unused")
+private E findMaxNode(Node node) throws ItemNoFound {
+    if (node == null) {
+        throw new ItemNoFound("El árbol o subárbol está vacío. No se puede encontrar el máximo.");
+        }
+
+    Node current = node;
+    while (current.right != null) {
+        current = current.right;
+        }
+
+    return search(current.data);
+    }
 
 }
 
