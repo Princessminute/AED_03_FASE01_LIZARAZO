@@ -215,6 +215,94 @@ private E findMaxNode(Node node) throws ItemNoFound {
 
     //-----EJERCICIOS--------------------------------------------
 
+    //a
+    public void destroyNodes() throws ExceptionIsEmpty {
+    if (isEmpty()) {
+        throw new ExceptionIsEmpty("El árbol está vacío.");
+    }
+    root = null; // Asigna null a la raíz, el recolector de basura se encargará del resto
+}
+
+
+//b,c
+public int countAllNodes() {
+    return countNonLeafNodes(root);
+}
+
+public int countNodes() {
+    return countNonLeafNodes(root);
+}
+
+private int countNonLeafNodes(Node node) {
+    if (node == null || (node.left == null && node.right == null)) {
+        return 0;
+    }
+    return 1 + countNonLeafNodes(node.left) + countNonLeafNodes(node.right);
+}
+
+//d
+
+public int height(E x) {
+    Node current = root;
+    while (current != null) {
+        int cmp = x.compareTo(current.data);
+        if (cmp == 0) {
+            return calculateHeightIterative(current);
+        } else if (cmp < 0) {
+            current = current.left;
+        } else {
+            current = current.right;
+        }
+    }
+    return -1;
+}
+
+private int calculateHeightIterative(Node node) {
+    if (node == null) return -1;
+    
+    java.util.LinkedList<Node> queue = new java.util.LinkedList<>();
+    queue.add(node);
+    int height = -1;
+
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        height++;
+        for (int i = 0; i < levelSize; i++) {
+            Node temp = queue.poll();
+            if (temp.left != null) queue.add(temp.left);
+            if (temp.right != null) queue.add(temp.right);
+        }
+    }
+    return height;
+}
+
+//e
+public int amplitude(int nivel) {
+    if (root == null) return 0;
+
+    java.util.LinkedList<Node> queue = new java.util.LinkedList<>();
+    queue.add(root);
+    int currentLevel = 0;
+
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        if (currentLevel == nivel) {
+            return levelSize;
+        }
+
+        for (int i = 0; i < levelSize; i++) {
+            Node temp = queue.poll();
+            if (temp.left != null) queue.add(temp.left);
+            if (temp.right != null) queue.add(temp.right);
+        }
+
+        currentLevel++;
+    }
+
+    return 0; 
+}
+
+
 }
 
 
