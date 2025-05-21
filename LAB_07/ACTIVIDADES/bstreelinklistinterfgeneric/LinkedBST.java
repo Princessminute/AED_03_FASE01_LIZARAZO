@@ -302,6 +302,55 @@ public int amplitude(int nivel) {
     return 0; 
 }
 
+ //-----EJERCICIOS PARTE 02--------------------------------------------
+
+ //A
+ public int areaBST() {
+    if (isEmpty()) return 0;
+
+    // Usamos cola para recorrido por niveles (nivel por nivel)
+    LinkedQueue<Node> queue = new LinkedQueue<>();
+    queue.enqueue(root);
+    int height = -1;
+    int leafCount = 0;
+
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        height++;
+        for (int i = 0; i < levelSize; i++) {
+            Node current = queue.dequeue();
+
+            if (current.left == null && current.right == null) {
+                leafCount++;
+            }
+            if (current.left != null) queue.enqueue(current.left);
+            if (current.right != null) queue.enqueue(current.right);
+        }
+    }
+
+    return leafCount * height;
+}
+
+//B
+public void drawBST() {
+    drawBST(root, 0);
+}
+
+private void drawBST(Node node, int level) {
+    if (node == null) return;
+
+    drawBST(node.right, level + 1);
+    System.out.println("  ".repeat(level) + "|-- " + node.data);
+    drawBST(node.left, level + 1);
+}
+
+//C
+public class Prueba {
+    public static boolean sameArea(LinkedBST<?> bst1, LinkedBST<?> bst2) {
+        return bst1.areaBST() == bst2.areaBST();
+    }
+}
+
 
 }
 
