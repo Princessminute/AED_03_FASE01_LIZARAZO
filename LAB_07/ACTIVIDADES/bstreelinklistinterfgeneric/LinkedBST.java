@@ -87,7 +87,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
             node.left = delete(node.left, data);
         } else if (cmp > 0) {
             node.right = delete(node.right, data);
-        } else { // Element found
+        } else { 
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
             Node min = findMin(node.right);

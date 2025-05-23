@@ -10,7 +10,7 @@ public class StackArray<C> implements Stack<C> {
         this.array = (C[]) new Object[n];
         this.tope = -1;
     }
-
+ 
     @Override
     public void push(C x) {
         if (full()) throw new RuntimeException("La pila está llena");
