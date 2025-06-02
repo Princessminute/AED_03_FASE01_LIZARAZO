@@ -160,13 +160,13 @@ private void recorridoPreOrden(Node node) {
     }
 
 
+//-----POST-ORDEN--------------------------------------------
 
     public void mostrarRecorridoPostOrden() {
     System.out.println("Recorrido Post-Orden del árbol:");
     recorridoPostOrden(this.root);
 }
 
-//-----POST-ORDEN--------------------------------------------
 
 private void recorridoPostOrden(Node node) {
     if (node != null) {
