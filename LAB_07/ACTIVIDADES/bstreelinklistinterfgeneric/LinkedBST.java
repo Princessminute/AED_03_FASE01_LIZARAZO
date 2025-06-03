@@ -4,7 +4,7 @@ import LAB_07.EXCEPTION.*;
 
 public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
 
-    private class Node {
+    public class Node {
         public E data;
         public Node left;
         public Node right;
@@ -20,7 +20,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         }
     }
 
-    private Node root;
+    public Node root;
 
     public LinkedBST() {
         this.root = null;
