@@ -103,20 +103,27 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         return node;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        inOrder(root, sb);
-        return sb.toString();
-    }
+   @Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    toStringHelper(root, sb, 0);
+    return sb.toString();
+}
 
-    private void inOrder(Node node, StringBuilder sb) {
-        if (node != null) {
-            inOrder(node.left, sb);
-            sb.append(node.data).append(" ");
-            inOrder(node.right, sb);
-        }
+private void toStringHelper(Node node, StringBuilder sb, int level) {
+    if (node != null) {
+        System.out.println("");
+        // Lado derecho primero para mostrarlo en árbol visual
+        toStringHelper(node.right, sb, level + 1);
+        
+        // Agregar indentación y el valor del nodo
+        sb.append("    ".repeat(level));
+        sb.append("- ").append(node.data).append("\n");
+
+        // Lado izquierdo después
+        toStringHelper(node.left, sb, level + 1);
     }
+}
 
 // ----- IN-ORDEN (nuevo método) -------------------------------------
 public String obtenerRecorridoInOrden() {

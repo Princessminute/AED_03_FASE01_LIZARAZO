@@ -86,7 +86,7 @@ System.out.println("Resultado final del recorrido: " + posteorden);
             System.out.println("\n===== FIN DE LAS PRUEBAS =====");
 
         } catch (Exception e) {
-            System.out.println("✘ Se produjo un error inesperado: " + e.getMessage());
+            System.out.println(" Se produjo un error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
     }
