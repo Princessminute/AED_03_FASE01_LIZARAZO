@@ -5,7 +5,7 @@ import LAB_07.EXCEPTION.ItemDuplicated;
 import LAB_07.EXCEPTION.ItemNoFound;
 import LAB_08.ACTIVIDADES.*;
 
-public class Main {
+public class Ejercicio1 {
     public static void main(String[] args) throws ItemDuplicated, ItemNoFound {
 
         //  Caso 1: Inserción en orden creciente (peor caso para BST)

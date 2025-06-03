@@ -1,7 +1,7 @@
 package LAB_08.ACTIVIDADES;
 
-import LAB_07.ACTIVIDADES.*;
 import LAB_07.ACTIVIDADES.bstreelinklistinterfgeneric.LinkedBST;
+import LAB_07.EXCEPTION.ExceptionIsEmpty;
 import LAB_07.EXCEPTION.ItemDuplicated;
 
 public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
@@ -165,5 +165,134 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
             grandchild.bf = 0;
             return grandchild;
         }
+        
     }
+
+
+
+    // EJERCICIO 02
+
+    @Override
+public void delete(E data) throws ExceptionIsEmpty {
+    if (isEmpty()) {
+        throw new ExceptionIsEmpty("El árbol está vacío.");
+    }
+    this.height = false;
+    root = delete((NodeAVL) root, data);
+}
+
+private NodeAVL delete(NodeAVL node, E data) {
+    if (node == null) {
+        return null; // No encontrado, simplemente retornamos null
+    }
+
+    int cmp = data.compareTo(node.data);
+
+    if (cmp < 0) {
+        node.left = delete((NodeAVL) node.left, data);
+        if (this.height) {
+            // Eliminación en subárbol izquierdo puede provocar desbalanceo a la derecha
+            node = balanceAfterDeleteRight(node);
+        }
+    } else if (cmp > 0) {
+        node.right = delete((NodeAVL) node.right, data);
+        if (this.height) {
+            // Eliminación en subárbol derecho puede provocar desbalanceo a la izquierda
+            node = balanceAfterDeleteLeft(node);
+        }
+    } else {
+        // Nodo encontrado, casos de eliminación:
+        if (node.left == null) {
+            this.height = true;
+            return (NodeAVL) node.right;
+        } else if (node.right == null) {
+            this.height = true;
+            return (NodeAVL) node.left;
+        } else {
+            // Nodo con dos hijos: reemplazamos con el sucesor mínimo del subárbol derecho
+            NodeAVL min = findMin((NodeAVL) node.right);
+            node.data = min.data;
+            node.right = delete((NodeAVL) node.right, min.data);
+            if (this.height) {
+                node = balanceAfterDeleteLeft(node);
+            }
+        }
+    }
+
+    return node;
+}
+
+private NodeAVL findMin(NodeAVL node) {
+    while (node.left != null) {
+        node = (NodeAVL) node.left;
+    }
+    return node;
+}
+
+/**
+ * Métodos para balancear después de eliminar en subárbol derecho o izquierdo.
+ * Aquí debes ajustar los factores de balance y hacer rotaciones si es necesario.
+ */
+
+// Balanceo cuando el subárbol derecho pierde un nodo (podría necesitar balance a la izquierda)
+private NodeAVL balanceAfterDeleteRight(NodeAVL node) {
+    switch (node.bf) {
+        case 1:
+            node.bf = 0;
+            break;
+        case 0:
+            node.bf = -1;
+            this.height = false;
+            break;
+        case -1:
+            NodeAVL leftChild = (NodeAVL) node.left;
+            if (leftChild.bf <= 0) {
+                node = rotateRight(node);
+                if (leftChild.bf == 0) {
+                    node.bf = 1;
+                    ((NodeAVL) node.right).bf = -1;
+                    this.height = false;
+                } else {
+                    node.bf = 0;
+                    ((NodeAVL) node.right).bf = 0;
+                }
+            } else {
+                node = balanceRight(node);
+            }
+            break;
+    }
+    return node;
+}
+
+// Balanceo cuando el subárbol izquierdo pierde un nodo (podría necesitar balance a la derecha)
+private NodeAVL balanceAfterDeleteLeft(NodeAVL node) {
+    switch (node.bf) {
+        case -1:
+            node.bf = 0;
+            break;
+        case 0:
+            node.bf = 1;
+            this.height = false;
+            break;
+        case 1:
+            NodeAVL rightChild = (NodeAVL) node.right;
+            if (rightChild.bf >= 0) {
+                node = rotateLeft(node);
+                if (rightChild.bf == 0) {
+                    node.bf = -1;
+                    ((NodeAVL) node.left).bf = 1;
+                    this.height = false;
+                } else {
+                    node.bf = 0;
+                    ((NodeAVL) node.left).bf = 0;
+                }
+            } else {
+                node = balanceLeft(node);
+            }
+            break;
+    }
+    return node;
+}
+
+    
 }
