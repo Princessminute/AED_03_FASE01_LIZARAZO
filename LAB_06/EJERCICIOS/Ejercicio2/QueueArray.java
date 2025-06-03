@@ -70,4 +70,9 @@ public class QueueArray<T> implements Queue<T> {
         T value = (T) data[rear];
         return value;
     }
+
+public int size() {
+    return count;
+}
+
 }

@@ -2,6 +2,7 @@ package LAB_07.ACTIVIDADES.bstreelinklistinterfgeneric;
 
 import LAB_07.EXCEPTION.*;
 
+
 public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
 
     public class Node {
