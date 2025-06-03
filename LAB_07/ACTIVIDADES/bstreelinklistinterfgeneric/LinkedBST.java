@@ -118,69 +118,75 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         }
     }
 
-//-----IN-ORDEN--------------------------------------------
-
-    public void mostrarRecorridoInOrden() {
-    System.out.println("Recorrido In-Orden del árbol:");
-    recorridoInOrden(this.root);
+// ----- IN-ORDEN (nuevo método) -------------------------------------
+public String obtenerRecorridoInOrden() {
+    StringBuilder sb = new StringBuilder();
+    construirInOrden(this.root, sb);
+    return sb.toString().trim(); // elimina el último espacio
 }
 
-private void recorridoInOrden(Node node) {
+private void construirInOrden(Node node, StringBuilder sb) {
     if (node != null) {
-        System.out.println("Recorrer el subárbol izquierdo en entreorden.");
-        recorridoInOrden(node.left);
+        System.out.println("Entrando al subárbol izquierdo de: " + node.data);
+        construirInOrden(node.left, sb);
 
-        System.out.println("Visitar la raíz: " + node.data);
+        System.out.println("Visitando nodo: " + node.data);
+        sb.append(node.data).append(" ");
 
-        System.out.println("Recorrer el subárbol derecho en entreorden.");
-        recorridoInOrden(node.right);
+        System.out.println("Entrando al subárbol derecho de: " + node.data);
+        construirInOrden(node.right, sb);
     } else {
-        System.out.println("Vacío");
-        }
+        System.out.println("Subárbol nulo, retrocediendo...");
     }
-//-----PRE-ORDEN--------------------------------------------
-
-public void mostrarRecorridoPreOrden() {
-    System.out.println("Recorrido Pre-Orden del árbol:");
-    recorridoPreOrden(this.root);
-}
-
-private void recorridoPreOrden(Node node) {
-    if (node != null) {
-        System.out.println("Visitar la raíz: " + node.data);
-
-        System.out.println("Recorrer el subárbol izquierdo en preorden.");
-        recorridoPreOrden(node.left);
-
-        System.out.println("Recorrer el subárbol derecho en preorden.");
-        recorridoPreOrden(node.right);
-    } else {
-        System.out.println("Vacío");
-        }
-    }
-
-
-//-----POST-ORDEN--------------------------------------------
-
-    public void mostrarRecorridoPostOrden() {
-    System.out.println("Recorrido Post-Orden del árbol:");
-    recorridoPostOrden(this.root);
 }
 
 
-private void recorridoPostOrden(Node node) {
+// ----- PRE-ORDEN (nuevo método) -------------------------------------
+public String obtenerRecorridoPreOrden() {
+    StringBuilder sb = new StringBuilder();
+    construirPreOrden(this.root, sb);
+    return sb.toString().trim();
+}
+
+private void construirPreOrden(Node node, StringBuilder sb) {
     if (node != null) {
-        System.out.println("Recorrer el subárbol izquierdo en postorden.");
-        recorridoPostOrden(node.left);
+        System.out.println("Visitando nodo: " + node.data);
+        sb.append(node.data).append(" ");
 
-        System.out.println("Recorrer el subárbol derecho en postorden.");
-        recorridoPostOrden(node.right);
+        System.out.println("Entrando al subárbol izquierdo de: " + node.data);
+        construirPreOrden(node.left, sb);
 
-        System.out.println("Visitar la raíz: " + node.data);
+        System.out.println("Entrando al subárbol derecho de: " + node.data);
+        construirPreOrden(node.right, sb);
     } else {
-        System.out.println("Vacío");
-        }
+        System.out.println("Subárbol nulo, retrocediendo...");
     }
+}
+
+
+// ----- POST-ORDEN (nuevo método) -------------------------------------
+public String obtenerRecorridoPostOrden() {
+    StringBuilder sb = new StringBuilder();
+    construirPostOrden(this.root, sb);
+    return sb.toString().trim();
+}
+
+private void construirPostOrden(Node node, StringBuilder sb) {
+    if (node != null) {
+        System.out.println("Entrando al subárbol izquierdo de: " + node.data);
+        construirPostOrden(node.left, sb);
+
+        System.out.println("Entrando al subárbol derecho de: " + node.data);
+        construirPostOrden(node.right, sb);
+
+        System.out.println("Visitando nodo: " + node.data);
+        sb.append(node.data).append(" ");
+    } else {
+        System.out.println("Subárbol nulo, retrocediendo...");
+    }
+}
+
+
 //-----NUEVOS MÉTODOS-------------------------------------------
 
 @SuppressWarnings("unused")
