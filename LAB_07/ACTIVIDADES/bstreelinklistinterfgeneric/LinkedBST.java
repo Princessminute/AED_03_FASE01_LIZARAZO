@@ -112,7 +112,6 @@ public String toString() {
 
 private void toStringHelper(Node node, StringBuilder sb, int level) {
     if (node != null) {
-        System.out.println("");
         // Lado derecho primero para mostrarlo en árbol visual
         toStringHelper(node.right, sb, level + 1);
         
@@ -224,7 +223,15 @@ private E findMaxNode(Node node) throws ItemNoFound {
     return search(current.data);
     }
     
+// Método público para obtener el mínimo valor del árbol
+public E findMin() throws ItemNoFound {
+    return findMinNode(root);
+}
 
+// Método público para obtener el máximo valor del árbol
+public E findMax() throws ItemNoFound {
+    return findMaxNode(root);
+}
 
     //-----EJERCICIOS--------------------------------------------
 

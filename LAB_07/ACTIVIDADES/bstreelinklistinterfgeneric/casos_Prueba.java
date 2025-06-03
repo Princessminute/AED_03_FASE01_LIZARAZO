@@ -41,12 +41,12 @@ System.out.println("Resultado final del recorrido: " + inorden);
 
 System.out.println("");
 
-System.out.println("\nRecorrido In-Orden:");
+System.out.println("\nRecorrido Pre-Orden:");
 String preorden = arbol.obtenerRecorridoPreOrden();
 System.out.println("Resultado final del recorrido: " + preorden);
 
 System.out.println("");
-System.out.println("\nRecorrido In-Orden:");
+System.out.println("\nRecorrido Post-Orden:");
 String posteorden = arbol.obtenerRecorridoPostOrden();
 System.out.println("Resultado final del recorrido: " + posteorden);
 
@@ -80,8 +80,20 @@ System.out.println("Resultado final del recorrido: " + posteorden);
                 System.out.println("Intentando eliminar el elemento 10 de un árbol vacío...");
                 arbolVacio.delete(10);
             } catch (ExceptionIsEmpty e) {
-                System.out.println("✘ Excepción esperada capturada: " + e.getMessage());
+                System.out.println(" Excepción esperada capturada: " + e.getMessage());
             }
+
+            System.out.println("\n>>> Pruebas de obtención del valor mínimo y máximo en el árbol:");
+try {
+    Integer min = arbol.findMin();
+    System.out.println(" Mínimo valor en el árbol: " + min);
+
+    Integer max = arbol.findMax();
+    System.out.println(" Máximo valor en el árbol: " + max);
+} catch (ItemNoFound e) {
+    System.out.println(" Excepción al buscar mínimo o máximo: " + e.getMessage());
+}
+
 
             System.out.println("\n===== FIN DE LAS PRUEBAS =====");
 
@@ -89,5 +101,7 @@ System.out.println("Resultado final del recorrido: " + posteorden);
             System.out.println(" Se produjo un error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
+        
     }
+
 }
