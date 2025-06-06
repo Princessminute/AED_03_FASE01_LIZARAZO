@@ -71,6 +71,22 @@ public class LinkedList<C> {
         }
     }
 
+
+
+    //DESDE AQUI EMPIEZA PARA GRAFOS
+    public boolean search(){
+        return false;
+    }
+
+
+
+    
+
+    //AQUI TERMINA PARA GRAFOS
+
+
+
+
     // Clase lógica de soporte Node
     // El usuario final no la ve
     private static class Node<C> {
