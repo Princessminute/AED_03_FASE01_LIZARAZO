@@ -26,4 +26,5 @@ public class Vertex<E> {
     public String toString() {
         return this.data + " => " + this.listAdj.toString();
     }
+
 }

@@ -74,13 +74,21 @@ public class LinkedList<C> {
 
 
     //DESDE AQUI EMPIEZA PARA GRAFOS
-    public boolean search(){
-        return false;
+    public void search(C x){
+
+    }
+
+    public C getElement (C x){
+        return C x;
+        
     }
 
 
+    public C insert(C x){
 
-    
+    }
+
+
 
     //AQUI TERMINA PARA GRAFOS
 
