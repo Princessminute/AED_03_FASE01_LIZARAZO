@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import LAB_06.ACTIVIDADES.ACT_2.QueueLink;
 import LAB_06.EJERCICIOS.Ejercicio1.StackLink;
 
-
 public class GraphLink<E> {
     protected LinkedList<Vertex<E>> listVertex;
 
@@ -144,7 +143,7 @@ public void bfs(E data) {
 
 
     // b) BFSPath
-// b) BFSPath sin ArrayList ni HashMap
+// b) BFSPath sin ArrayList
 public LinkedList<E> bfsPath(E startData, E endData) {
     Vertex<E> start = listVertex.getElement(new Vertex<>(startData));
     Vertex<E> end = listVertex.getElement(new Vertex<>(endData));
@@ -418,6 +417,28 @@ public void printFormal() {
     }
 }
 
+/*public void printFormal() {
+    System.out.println("Vértices:");
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        System.out.print(listVertex.next().getData() + " ");
+    }
+    System.out.println("\nAristas:");
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Vertex<E> dest = v.listAdj.next().getRefDest();
+            // Evitar imprimir aristas duplicadas (como (u,v) y (v,u))
+            if (listVertex.search(dest) > listVertex.search(v)) {
+                System.out.println("(" + v.getData() + ", " + dest.getData() + ")");
+            }
+        }
+    }
+}
+ */
+
 //ADYACENCIA 6.B
 public void printListaAdyacencia() {
     listVertex.reset();
@@ -627,6 +648,118 @@ public void printTipoGrafo() {
     else if (isCicloDirigido()) System.out.println("El grafo es un Ciclo Dirigido.");
     else if (isRuedaDirigida()) System.out.println("El grafo es una Rueda Dirigida.");
     else System.out.println("El grafo no es Camino, Ciclo ni Rueda Dirigida.");
+}
+
+
+//isoformo
+public boolean isIsomorfo(GraphLink<E> other) {
+    if (this.listVertex.size() != other.listVertex.size()) return false;
+
+    this.listVertex.reset();
+    while (this.listVertex.hasNext()) {
+        Vertex<E> v1 = this.listVertex.next();
+
+        Vertex<E> otherV = other.listVertex.getElement(new Vertex<>(v1.getData()));
+
+        if (otherV == null || v1.listAdj.size() != otherV.listAdj.size()) {
+            return false;
+        }
+    }
+    // Si pasa todas las verificaciones básicas, retornamos true.
+    // IMPORTANTE: Este método solo verifica un criterio simple de isomorfismo (basado en la existencia y el grado de los vértices).
+    // Para una comprobación completa, se necesitaría probar todas las permutaciones posibles de los vértices,
+    // lo cual es computacionalmente costoso (problema NP-completo).
+    return true;
+}
+
+
+//grafo plano
+public boolean isPlano() {
+    int n = listVertex.size();
+    int e = 0;
+
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        e += v.listAdj.size();
+    }
+
+    e /= 2; // porque se cuenta doble (grafo no dirigido)
+
+    return n < 3 || e <= 3 * n - 6;
+}
+
+//conexo
+
+
+//auto complementario
+
+public boolean isAutoComplementario() {
+    GraphLink<E> complement = new GraphLink<>();
+
+    // Copiar vértices
+    this.listVertex.reset();
+    while (this.listVertex.hasNext()) {
+        Vertex<E> v = this.listVertex.next();
+        complement.insertVertex(v.getData());
+    }
+
+    this.listVertex.reset();
+    while (this.listVertex.hasNext()) {
+        Vertex<E> v1 = this.listVertex.next();
+
+        this.listVertex.reset(); // Reiniciar para comparar con todos
+        while (this.listVertex.hasNext()) {
+            Vertex<E> v2 = this.listVertex.next();
+            if (!v1.equals(v2) && !this.searchEdge(v1.getData(), v2.getData())) {
+                complement.insertEdge(v1.getData(), v2.getData());
+            }
+        }
+    }
+
+    return this.isIsomorfo(complement);
+}
+
+public boolean isConexo2() {
+    if (listVertex.isEmpty()) return true;
+
+    LinkedList<Vertex<E>> visitados = new LinkedList<>();
+    QueueLink<Vertex<E>> cola = new QueueLink<>();
+
+    listVertex.reset();
+    Vertex<E> inicio = listVertex.next(); // obtener el primer vértice sin usar get(0)
+    cola.enqueue(inicio);
+    visitados.insert(inicio);
+
+    while (!cola.isEmpty()) {
+        Vertex<E> actual;
+        try {
+            actual = cola.dequeue();
+        } catch (ExceptionIsEmpty e) {
+            return false; // no debería pasar
+        }
+
+        actual.listAdj.reset();
+        while (actual.listAdj.hasNext()) {
+            Edge<E> arista = actual.listAdj.next();
+            Vertex<E> vecino = arista.getRefDest();  // ✔️ Esto sí compila'
+
+            if (!contiene(visitados, vecino)) {
+                visitados.insert(vecino);
+                cola.enqueue(vecino);
+            }
+        }
+    }
+
+    return visitados.size() == listVertex.size();
+}
+
+private boolean contiene(LinkedList<Vertex<E>> lista, Vertex<E> elemento) {
+    lista.reset();
+    while (lista.hasNext()) {
+        if (lista.next().equals(elemento)) return true;
+    }
+    return false;
 }
 
 }

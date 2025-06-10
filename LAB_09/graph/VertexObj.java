@@ -20,5 +20,10 @@ public class VertexObj<V, E> {
     public String toString() {
         return info.toString();
     }
+
+    public int getPosition() {
+    return position;
+}
+
 }
 

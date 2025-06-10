@@ -13,6 +13,7 @@ public class Vertex<E> {
         return data;
     }
 
+    
     @Override
     public boolean equals(Object o) {
         if (o instanceof Vertex<?>) {

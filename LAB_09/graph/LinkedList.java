@@ -178,5 +178,13 @@ public int size() {
     }
     return count;
 }
+@SuppressWarnings("unused")
+private boolean contiene(LinkedList<Vertex<C>> lista, Vertex<C> elemento) {
+    lista.reset();
+    while (lista.hasNext()) {
+        if (lista.next().equals(elemento)) return true;
+    }
+    return false;
+}
 
 }
