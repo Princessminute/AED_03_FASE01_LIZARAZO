@@ -163,4 +163,20 @@ public boolean remove(C x) {
         }
     }
 
+    public C getFirst() {
+    if (head != null)
+        return head.data;
+    return null;
+}
+
+public int size() {
+    int count = 0;
+    Node<C> current = head;
+    while (current != null) {
+        count++;
+        current = current.next;
+    }
+    return count;
+}
+
 }

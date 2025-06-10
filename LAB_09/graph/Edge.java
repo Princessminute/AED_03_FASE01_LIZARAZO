@@ -16,6 +16,11 @@ public class Edge<E> {
     public Vertex<E> getRefDest() {
         return refDest;
     }
+//ADICION PARA EL EJERCICIO 02.C
+    public int getWeight() {
+    return weight;
+}
+
 
     @Override
     public boolean equals(Object o) {
