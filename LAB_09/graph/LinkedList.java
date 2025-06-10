@@ -74,19 +74,75 @@ public class LinkedList<C> {
 
 
     //DESDE AQUI EMPIEZA PARA GRAFOS
-    public void search(C x){
+   public int search(C x) {
+    int index = 0;
+    Node<C> current = head;
+    while (current != null) {
+        if (current.data.equals(x)) {
+            return index;
+        }
+        current = current.next;
+        index++;
+    }
+    return -1;
+}
 
+
+    public C getElement(C x) {
+    Node<C> current = head;
+    while (current != null) {
+        if (current.data.equals(x)) {
+            return current.data;
+        }
+        current = current.next;
+    }
+    return null;
+}
+
+
+
+    public C insert(C x) {
+    addLast(x); // O addFirst(x), según tu diseño
+    return x;
+}
+
+private Node<C> iterator; // Añade este atributo a la clase
+
+public void reset() {
+    iterator = head;
+}
+
+public boolean hasNext() {
+    return iterator != null;
+}
+
+public C next() {
+    C data = iterator.data;
+    iterator = iterator.next;
+    return data;
+}
+
+public boolean remove(C x) {
+    if (head == null) return false;
+
+    if (head.data.equals(x)) {
+        head = head.next;
+        return true;
     }
 
-    public C getElement (C x){
-        return C x;
-        
+    Node<C> current = head;
+    while (current.next != null && !current.next.data.equals(x)) {
+        current = current.next;
     }
 
-
-    public C insert(C x){
-
+    if (current.next != null) {
+        current.next = current.next.next;
+        return true;
     }
+
+    return false;
+}
+
 
 
 
