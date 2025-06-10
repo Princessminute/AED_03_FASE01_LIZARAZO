@@ -328,4 +328,305 @@ public StackLink<E> Dijkstra(E startData, E endData) {
     return stack;
 }
 
+
+//EJERCICIO 05 (a)
+// Obtener el grado de un nodo (cantidad de aristas conectadas)
+public int getGradoNodo(E data) {
+    Vertex<E> v = listVertex.getElement(new Vertex<>(data));
+    if (v == null) return -1;
+    return v.listAdj.size();
+}
+
+//EJERCICIO 05 (b)
+// Verifica si el grafo es un Camino (P)
+public boolean isCamino() {
+    int countGrado1 = 0;
+    int countGrado2 = 0;
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        int grado = v.listAdj.size();
+        if (grado == 1) countGrado1++;
+        else if (grado == 2) countGrado2++;
+        else return false;  // si algún nodo tiene grado distinto a 1 o 2, no es camino
+    }
+    return (countGrado1 == 2 && countGrado2 == listVertex.size() - 2);
+}
+
+//EJERCICIO 05 (C)
+// Verifica si el grafo es un Ciclo (C)
+public boolean isCiclo() {
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        if (v.listAdj.size() != 2) return false; // todos los nodos deben tener grado 2
+    }
+    return true;
+}
+
+//EJERCICIO 05 (d)
+// Verifica si el grafo es una Rueda (W)
+public boolean isRueda() {
+    int n = listVertex.size();
+    if (n < 4) return false; // mínimo 4 nodos para formar una rueda
+
+    int centro = 0;
+    int perifericos = 0;
+
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        int grado = v.listAdj.size();
+        if (grado == n - 1) centro++;
+        else if (grado == 3) perifericos++;
+        else return false;
+    }
+
+    return (centro == 1 && perifericos == n - 1);
+}
+
+//EJERCICIO 05 (e)
+// Verifica si el grafo es Completo (K)
+public boolean isCompleto() {
+    int n = listVertex.size();
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        if (v.listAdj.size() != n - 1) return false;
+    }
+    return true;
+}
+//FORMAL 6.A
+public void printFormal() {
+    System.out.println("Vértices:");
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        System.out.print(listVertex.next().getData() + " ");
+    }
+    System.out.println("\nAristas:");
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Vertex<E> dest = v.listAdj.next().getRefDest();
+            // Para no imprimir duplicados en grafo no dirigido
+            if (v.getData().toString().compareTo(dest.getData().toString()) < 0) {
+                System.out.println("(" + v.getData() + ", " + dest.getData() + ")");
+            }
+        }
+    }
+}
+
+//ADYACENCIA 6.B
+public void printListaAdyacencia() {
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        System.out.print(v.getData() + ": ");
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            System.out.print(v.listAdj.next().getRefDest().getData() + " ");
+        }
+        System.out.println();
+    }
+}
+
+
+//MATRIZ 6.C
+public void printMatrizAdyacencia() {
+    ArrayList<Vertex<E>> vertices = new ArrayList<>();
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        vertices.add(listVertex.next());
+    }
+
+    System.out.print("    ");
+    for (Vertex<E> v : vertices) {
+        System.out.print(v.getData() + " ");
+    }
+    System.out.println();
+
+    for (Vertex<E> v1 : vertices) {
+        System.out.print(v1.getData() + ": ");
+        for (Vertex<E> v2 : vertices) {
+            boolean connected = v1.listAdj.search(new Edge<>(v2)) >= 0;
+            System.out.print((connected ? "1" : "0") + " ");
+        }
+        System.out.println();
+    }
+}
+
+public void showFormal() {
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        System.out.print(v.getData() + " -> ");
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Edge<E> edge = v.listAdj.next();
+            System.out.print(edge.getRefDest().getData());
+            if (edge.getWeight() != 1) { // para grafos ponderados
+                System.out.print("[" + edge.getWeight() + "]");
+            }
+            if (v.listAdj.hasNext()) System.out.print(", ");
+        }
+        System.out.println();
+    }
+}
+
+
+// Mostrar lista de adyacencias
+public void showAdyacencias() {
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        System.out.print(v.getData() + " -> ");
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Edge<E> edge = v.listAdj.next();
+            System.out.print(edge.getRefDest().getData() + " ");
+        }
+        System.out.println();
+    }
+}
+
+// Mostrar matriz de adyacencia
+public void showMatrizAdyacencia() {
+    int size = listVertex.size();
+    Vertex<E>[] vertices = new Vertex[size];
+    
+    listVertex.reset();
+    int i = 0;
+    while (listVertex.hasNext()) {
+        vertices[i++] = listVertex.next();
+    }
+
+    System.out.print("    ");
+    for (int k = 0; k < size; k++) {
+        System.out.print(vertices[k].getData() + " ");
+    }
+    System.out.println();
+
+    for (i = 0; i < size; i++) {
+        System.out.print(vertices[i].getData() + " | ");
+        for (int j = 0; j < size; j++) {
+            Vertex<E> ori = vertices[i];
+            Vertex<E> des = vertices[j];
+            int val = ori.listAdj.search(new Edge<>(des)) >= 0 ? 1 : 0;
+            System.out.print(" " + val + " ");
+        }
+        System.out.println();
+    }
+}
+// Retorna grado de salida (cantidad de aristas salientes)
+public int getGradoSalida(E data) {
+    Vertex<E> v = listVertex.getElement(new Vertex<>(data));
+    if (v == null) return -1;
+    return v.listAdj.size();
+}
+
+// Retorna grado de entrada (cantidad de aristas entrantes)
+public int getGradoEntrada(E data) {
+    Vertex<E> target = listVertex.getElement(new Vertex<>(data));
+    if (target == null) return -1;
+
+    int gradoEntrada = 0;
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Edge<E> edge = v.listAdj.next();
+            if (edge.getRefDest().equals(target)) {
+                gradoEntrada++;
+            }
+        }
+    }
+    return gradoEntrada;
+}
+
+// Retorna grado total (entrada + salida)
+public int getGradoTotal(E data) {
+    int entrada = getGradoEntrada(data);
+    int salida = getGradoSalida(data);
+    if (entrada == -1 || salida == -1) return -1;
+    return entrada + salida;
+}
+
+
+public boolean isCaminoDirigido() {
+    int countStart = 0;  // nodos con grado entrada=0 y salida=1
+    int countEnd = 0;    // nodos con grado entrada=1 y salida=0
+    int countMid = 0;    // nodos con grado entrada=1 y salida=1
+
+    int n = listVertex.size();
+    if (n == 0) return false;
+
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        int in = getGradoEntrada(v.getData());
+        int out = getGradoSalida(v.getData());
+
+        if (in == 0 && out == 1) countStart++;
+        else if (in == 1 && out == 0) countEnd++;
+        else if (in == 1 && out == 1) countMid++;
+        else return false; // si no cumple estas condiciones, no es camino dirigido
+    }
+
+    return (countStart == 1 && countEnd == 1 && countMid == n - 2);
+}
+
+public boolean isCicloDirigido() {
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        int in = getGradoEntrada(v.getData());
+        int out = getGradoSalida(v.getData());
+
+        if (in != 1 || out != 1) return false;
+    }
+    return true;
+}
+
+public boolean isRuedaDirigida() {
+    int n = listVertex.size();
+    if (n < 4) return false; // Rueda mínima 4 nodos
+
+    int centro = 0;
+    int perifericos = 0;
+
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        int in = getGradoEntrada(v.getData());
+        int out = getGradoSalida(v.getData());
+
+        if (out == n - 1 && in == 0) {
+            centro++;
+        } else if (in == 1 && out == 1) {
+            perifericos++;
+        } else {
+            return false;
+        }
+    }
+
+    return (centro == 1 && perifericos == n - 1);
+}
+
+public void printInfoNodo(E data) {
+    System.out.println("Nodo: " + data);
+    System.out.println("Grado Entrada: " + getGradoEntrada(data));
+    System.out.println("Grado Salida: " + getGradoSalida(data));
+    System.out.println("Grado Total: " + getGradoTotal(data));
+}
+
+public void printTipoGrafo() {
+    if (isCaminoDirigido()) System.out.println("El grafo es un Camino Dirigido.");
+    else if (isCicloDirigido()) System.out.println("El grafo es un Ciclo Dirigido.");
+    else if (isRuedaDirigida()) System.out.println("El grafo es una Rueda Dirigida.");
+    else System.out.println("El grafo no es Camino, Ciclo ni Rueda Dirigida.");
+}
+
 }
