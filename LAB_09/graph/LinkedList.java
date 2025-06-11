@@ -187,4 +187,6 @@ private boolean contiene(LinkedList<Vertex<C>> lista, Vertex<C> elemento) {
     return false;
 }
 
+
+
 }

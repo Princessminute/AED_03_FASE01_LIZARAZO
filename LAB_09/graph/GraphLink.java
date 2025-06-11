@@ -689,7 +689,7 @@ public boolean isPlano() {
     return n < 3 || e <= 3 * n - 6;
 }
 
-//conexo
+
 
 
 //auto complementario
@@ -720,6 +720,8 @@ public boolean isAutoComplementario() {
     return this.isIsomorfo(complement);
 }
 
+
+//conexo
 public boolean isConexo2() {
     if (listVertex.isEmpty()) return true;
 
