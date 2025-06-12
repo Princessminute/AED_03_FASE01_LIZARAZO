@@ -86,27 +86,64 @@ public class GraphLink<E> {
         dfsRecursive(start, visited);
     }
 
-    private void dfsRecursive(Vertex<E> current, LinkedList<Vertex<E>> visited) {
-        System.out.print(current.getData() + " ");
-        visited.insert(current);
+private void dfsRecursive(Vertex<E> current, LinkedList<Vertex<E>> visited) {
+    System.out.println("--------------------------------------------------");
+    System.out.println("Visitando nodo: " + current.getData());
+    visited.insert(current);
 
-        current.listAdj.reset();
-        while (current.listAdj.hasNext()) {
-            Edge<E> edge = current.listAdj.next();
-            Vertex<E> neighbor = edge.getRefDest();
+    // Mostrar nodos visitados hasta el momento
+    System.out.print("Nodos visitados hasta ahora: ");
+    visited.reset();
+    while (visited.hasNext()) {
+        System.out.print(visited.next().getData() + " ");
+    }
+    System.out.println();
 
-            if (visited.search(neighbor) < 0) {
-                dfsRecursive(neighbor, visited);
-            }
+    // Mostrar vecinos del nodo actual
+    System.out.print("Vecinos de " + current.getData() + ": ");
+    current.listAdj.reset();
+    while (current.listAdj.hasNext()) {
+        Edge<E> edge = current.listAdj.next();
+        System.out.print(edge.getRefDest().getData() + " ");
+    }
+    System.out.println();
+
+    // Recorrido a vecinos no visitados
+    current.listAdj.reset(); // Reiniciar para el recorrido
+    while (current.listAdj.hasNext()) {
+        Edge<E> edge = current.listAdj.next();
+        Vertex<E> neighbor = edge.getRefDest();
+
+        if (visited.search(neighbor) < 0) {
+            System.out.println("-> Recorriendo desde " + current.getData() + " hacia " + neighbor.getData());
+            dfsRecursive(neighbor, visited);
+        } else {
+            System.out.println("-> El nodo " + neighbor.getData() + " ya fue visitado. No se recorre nuevamente.");
         }
     }
+}
+
 
     @Override
-    public String toString() {
-        return this.listVertex.toString();
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    listVertex.reset();
+    while (listVertex.hasNext()) {
+        Vertex<E> v = listVertex.next();
+        sb.append(v.getData()).append(" -> ");
+        v.listAdj.reset();
+        while (v.listAdj.hasNext()) {
+            Edge<E> e = v.listAdj.next();
+            sb.append(e.getRefDest().getData()).append(", ");
+        }
+        sb.append("\n");
     }
+    return sb.toString();
+}
+
 
     // a) BFS
+    /* 
 public void bfs(E data) {
     Vertex<E> start = listVertex.getElement(new Vertex<>(data));
     if (start == null) return;
@@ -140,8 +177,52 @@ public void bfs(E data) {
     }
     System.out.println();
 }
+    */
 
+    //IMPRESION EXPLICITA
+   public void bfs(E data) {
+    Vertex<E> start = listVertex.getElement(new Vertex<>(data));
+    if (start == null) {
+        System.out.println("Nodo inicial no encontrado: " + data);
+        return;
+    }
 
+    System.out.println("Iniciando BFS desde el nodo: " + data);
+
+    LinkedList<Vertex<E>> visited = new LinkedList<>();
+    QueueLink<Vertex<E>> queue = new QueueLink<>();
+
+    visited.insert(start);
+    queue.enqueue(start);
+    System.out.println("Cola inicial: " + start.getData());
+
+    while (!queue.isEmpty()) {
+        Vertex<E> current;
+        try {
+            current = queue.dequeue();
+        } catch (ExceptionIsEmpty e) {
+            System.out.println("Error al hacer dequeue: " + e.getMessage());
+            return;
+        }
+
+        System.out.println("Procesando nodo: " + current.getData());
+
+        current.listAdj.reset();
+        while (current.listAdj.hasNext()) {
+            Edge<E> edge = current.listAdj.next();
+            Vertex<E> neighbor = edge.getRefDest();
+            if (visited.search(neighbor) < 0) {
+                visited.insert(neighbor);
+                queue.enqueue(neighbor);
+                System.out.println("  -> Nodo descubierto: " + neighbor.getData() + " (agregado a la cola)");
+            } else {
+                System.out.println("  -> Nodo ya visitado: " + neighbor.getData());
+            }
+        }
+    }
+}
+
+/* 
     // b) BFSPath
 // b) BFSPath sin ArrayList
 public LinkedList<E> bfsPath(E startData, E endData) {
@@ -202,6 +283,80 @@ public LinkedList<E> bfsPath(E startData, E endData) {
     return path;
 }
 
+*/
+
+public LinkedList<E> bfsPath(E startData, E endData) {
+    Vertex<E> start = listVertex.getElement(new Vertex<>(startData));
+    Vertex<E> end = listVertex.getElement(new Vertex<>(endData));
+    LinkedList<E> path = new LinkedList<>();
+
+    if (start == null || end == null) {
+        System.out.println("Error: nodo inicial o final no encontrado.");
+        return path;
+    }
+
+    System.out.println("Buscando camino más corto desde " + startData + " hasta " + endData + " usando BFS...");
+
+    LinkedList<Vertex<E>> visited = new LinkedList<>();
+    QueueLink<Vertex<E>> queue = new QueueLink<>();
+    LinkedList<Vertex<E>> parentKeys = new LinkedList<>();
+    LinkedList<Vertex<E>> parentValues = new LinkedList<>();
+
+    visited.insert(start);
+    queue.enqueue(start);
+    parentKeys.insert(start);
+    parentValues.insert(null);
+
+    boolean found = false;
+
+    while (!queue.isEmpty() && !found) {
+        Vertex<E> current;
+        try {
+            current = queue.dequeue();
+        } catch (ExceptionIsEmpty e) {
+            System.out.println("Error al hacer dequeue: " + e.getMessage());
+            return path;
+        }
+
+        System.out.println("Procesando nodo: " + current.getData());
+
+        current.listAdj.reset();
+        while (current.listAdj.hasNext()) {
+            Edge<E> edge = current.listAdj.next();
+            Vertex<E> neighbor = edge.getRefDest();
+
+            if (visited.search(neighbor) < 0) {
+                visited.insert(neighbor);
+                queue.enqueue(neighbor);
+                parentKeys.insert(neighbor);
+                parentValues.insert(current);
+                System.out.println("  -> Se visita: " + neighbor.getData() + ", padre: " + current.getData());
+
+                if (neighbor.equals(end)) {
+                    System.out.println("  -> Nodo final encontrado: " + endData);
+                    found = true;
+                    break;
+                }
+            } else {
+                System.out.println("  -> Nodo ya visitado: " + neighbor.getData());
+            }
+        }
+    }
+
+    if (!found) {
+        System.out.println("No se encontró un camino entre " + startData + " y " + endData);
+        return path;
+    }
+
+    Vertex<E> current = end;
+    while (current != null) {
+        path.addFirst(current.getData());
+        current = getParent(current, parentKeys, parentValues);
+    }
+
+    return path;
+}
+
 // Método auxiliar para encontrar el "padre" de un nodo en listas paralelas
 private Vertex<E> getParent(Vertex<E> child, LinkedList<Vertex<E>> keys, LinkedList<Vertex<E>> values) {
     keys.reset();
@@ -240,6 +395,7 @@ public void insertEdgeWeight(E verOri, E verDes, int weight) {
 //EJERCICIO 02:(B)
 
 public ArrayList<E> shortPath(E startData, E endData) {
+    
     ArrayList<E> path = new ArrayList<>();
 
     Vertex<E> start = listVertex.getElement(new Vertex<>(startData));
@@ -319,6 +475,7 @@ public boolean isConexo() {
 //EJERCICIO 02:(D)
 
 public StackLink<E> Dijkstra(E startData, E endData) {
+    
     StackLink<E> stack = new StackLink<>();
     ArrayList<E> path = shortPath(startData, endData);
     for (int i = path.size() - 1; i >= 0; i--) {

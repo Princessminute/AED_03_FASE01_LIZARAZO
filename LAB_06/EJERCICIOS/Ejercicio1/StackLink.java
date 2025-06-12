@@ -51,4 +51,15 @@ public class StackLink<T> implements Stack<T> {
         recursivePrint(node.previous);
         System.out.print("[" + node.data + "] ");
     }
+
+    public void print2() {
+    Node<T> current = top; // Asumiendo que el tope está al inicio
+    while (current != null) {
+        System.out.print(current.getData());
+        if (current.getNext() != null) System.out.print(" -> ");
+        current = current.getNext();
+    }
+    System.out.println();
+}
+
 }
