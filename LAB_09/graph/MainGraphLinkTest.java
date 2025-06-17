@@ -43,6 +43,6 @@ public class MainGraphLinkTest {
         // Camino más corto con Dijkstra (en stack)
         System.out.println("\nCamino más corto usando Dijkstra de A a E:");
         StackLink<String> dijkstraPath = graph.Dijkstra("A", "E");
-        dijkstraPath.print2();  // Asumiendo que tienes un método print() en tu StackLink
+        dijkstraPath.print();  // Asumiendo que tienes un método print() en tu StackLink
     }
 }
