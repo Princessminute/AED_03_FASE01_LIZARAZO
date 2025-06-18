@@ -7,7 +7,7 @@ public class BNode<E extends Comparable<E>> {
     protected ArrayList<BNode<E>> childs;
     protected int count;
     protected int idNode;
-    private static int nodeCounter = 0; // Para asignar un id único a cada nodo
+    private static int nodeCounter = 0;
 
     public BNode(int n) {
         this.keys = new ArrayList<E>(n);
@@ -23,48 +23,66 @@ public class BNode<E extends Comparable<E>> {
         }
     }
 
-    // Verifica si el nodo está lleno
     public boolean nodeFull(int maxKeys) {
-        return count == maxKeys;
+        return count >= maxKeys;
     }
 
-    // Verifica si el nodo está vacío
     public boolean nodeEmpty() {
         return count == 0;
     }
 
     public SearchResult searchNode(E key) {
-        int i = 0;
-        while (i < count && keys.get(i) != null && key.compareTo(keys.get(i)) > 0) {
-            i++;
+        return searchRecursive(key, 0);
+    }
+
+    private SearchResult searchRecursive(E key, int index) {
+        if (index >= count) {
+            return new SearchResult(false, index);
         }
 
-        if (i < count && keys.get(i) != null && key.compareTo(keys.get(i)) == 0) {
-            return new SearchResult(true, i); // Clave encontrada
-        } else {
-            return new SearchResult(false, i); // No encontrada, retorna posición para bajar
+        E currentKey = keys.get(index);
+        if (currentKey == null) {
+            return new SearchResult(false, index);
         }
+
+        int cmp = key.compareTo(currentKey);
+        if (cmp == 0) {
+            return new SearchResult(true, index);
+        } else if (cmp > 0) {
+            return searchRecursive(key, index + 1); // Sigue buscando
+        } else {
+            return new SearchResult(false, index); // Posición de descenso
+        }
+    }
+
+    public void addKey(E key, int position) {
+        if (position < keys.size()) {
+            keys.set(position, key);  // reemplaza un null si ya existe
+        } else {
+            keys.add(key); // o bien agregamos al final si no está prellenado
+        }
+        count++;
+    }
+
+    public void addChild(BNode<E> child, int position) {
+        while (childs.size() <= position) {
+            childs.add(null);
+        }
+        childs.set(position, child);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Node ID: ").append(idNode).append(" | Keys: ");
-        for (int i = 0; i < count; i++) {
-            sb.append(keys.get(i)).append(" ");
+        StringBuilder sb = new StringBuilder("Nodo ID ").append(idNode).append(" | Claves descendentes: ");
+        for (E key : keys) {
+            if (key != null) {
+                sb.append(key).append(" ");
+            }
         }
         return sb.toString().trim();
     }
 
-    // Clase auxiliar para encapsular el resultado de búsqueda
-    public static class SearchResult {
-        public boolean found;
-        public int position;
-
-        public SearchResult(boolean found, int position) {
-            this.found = found;
-            this.position = position;
-        }
-    }
+    public record SearchResult(boolean found, int position) {}
 }
+
 
