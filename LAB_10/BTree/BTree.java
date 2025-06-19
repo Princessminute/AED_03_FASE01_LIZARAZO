@@ -138,6 +138,210 @@ private void writeTree(BNode<E> current, StringBuilder sb) {
     }
 }
 
+public boolean search(E cl) {
+    return searchRecursive(this.root, cl);
+}
+
+private boolean searchRecursive(BNode<E> current, E cl) {
+    if (current == null) return false;
+
+    BNode.SearchResult result = current.searchNode(cl);
+
+    if (result.found()) {
+        System.out.println(cl + " se encuentra en el nodo " + current.idNode + " en la posición " + result.position());
+        return true;
+    } else {
+        return searchRecursive(current.childs.get(result.position()), cl);
+    }
+}
+
+//EJERCICIO 02.
+public void remove(E cl) {
+    if (isEmpty()) {
+        System.out.println("El árbol está vacío.");
+        return;
+    }
+
+    removeRecursive(this.root, cl);
+
+    // Si después de eliminar la raíz queda vacía y tiene un solo hijo, el hijo se convierte en la nueva raíz
+    if (root.count == 0 && root.childs.get(0) != null) {
+        root = root.childs.get(0);
+    } else if (root.count == 0) {
+        root = null; // árbol quedó vacío
+    }
+}
+
+private void removeRecursive(BNode<E> node, E cl) {
+    BNode.SearchResult result = node.searchNode(cl);
+
+    if (result.found()) {
+        // Caso 1: clave está en nodo hoja
+        if (isLeaf(node)) {
+            for (int i = result.position(); i < node.count - 1; i++) {
+                node.keys.set(i, node.keys.get(i + 1));
+            }
+            node.keys.set(node.count - 1, null);
+            node.count--;
+        } else {
+            // Caso 2: clave está en nodo interno
+            BNode<E> predChild = node.childs.get(result.position());
+            BNode<E> succChild = node.childs.get(result.position() + 1);
+
+            // Preferir antecesor si tiene suficientes claves
+            if (predChild.count >= orden / 2) {
+                E predecessor = getMax(predChild);
+                node.keys.set(result.position(), predecessor);
+                removeRecursive(predChild, predecessor);
+            } else if (succChild.count >= orden / 2) {
+                E successor = getMin(succChild);
+                node.keys.set(result.position(), successor);
+                removeRecursive(succChild, successor);
+            } else {
+                // Fusión y eliminación
+                merge(node, result.position());
+                removeRecursive(predChild, cl);
+            }
+        }
+    } else {
+        // Descender al hijo apropiado
+        int pos = result.position();
+        BNode<E> child = node.childs.get(pos);
+
+        if (child == null) {
+            System.out.println("Clave no encontrada.");
+            return;
+        }
+
+        // Si el hijo tiene menos de t claves, tratamos de arreglarlo antes de seguir
+        if (child.count < orden / 2) {
+            fixChild(node, pos);
+        }
+
+        // Es posible que el hijo haya cambiado tras la fusión
+        removeRecursive(node.childs.get(pos), cl);
+    }
+}
+private boolean isLeaf(BNode<E> node) {
+    for (BNode<E> child : node.childs) {
+        if (child != null) return false;
+    }
+    return true;
+}
+
+private E getMax(BNode<E> node) {
+    while (!isLeaf(node)) {
+        for (int i = node.count; i >= 0; i--) {
+            if (node.childs.get(i) != null) {
+                node = node.childs.get(i);
+                break;
+            }
+        }
+    }
+    return node.keys.get(node.count - 1);
+}
+
+private E getMin(BNode<E> node) {
+    while (!isLeaf(node)) {
+        for (int i = 0; i <= node.count; i++) {
+            if (node.childs.get(i) != null) {
+                node = node.childs.get(i);
+                break;
+            }
+        }
+    }
+    return node.keys.get(0);
+}
+
+private void merge(BNode<E> parent, int pos) {
+    BNode<E> left = parent.childs.get(pos);
+    BNode<E> right = parent.childs.get(pos + 1);
+
+    // Mover la clave del padre al medio del nuevo nodo
+    left.keys.set(left.count++, parent.keys.get(pos));
+
+    // Copiar claves y hijos del nodo derecho al izquierdo
+    for (int i = 0; i < right.count; i++) {
+        left.keys.set(left.count + i, right.keys.get(i));
+    }
+    for (int i = 0; i <= right.count; i++) {
+        left.childs.set(left.count + i, right.childs.get(i));
+    }
+
+    left.count += right.count;
+
+    // Eliminar la clave del padre
+    for (int i = pos; i < parent.count - 1; i++) {
+        parent.keys.set(i, parent.keys.get(i + 1));
+        parent.childs.set(i + 1, parent.childs.get(i + 2));
+    }
+
+    parent.keys.set(parent.count - 1, null);
+    parent.childs.set(parent.count, null);
+    parent.count--;
+}
+
+private void fixChild(BNode<E> parent, int pos) {
+    BNode<E> child = parent.childs.get(pos);
+
+    // Intentar prestar del hermano izquierdo
+    if (pos > 0 && parent.childs.get(pos - 1).count >= orden / 2) {
+        BNode<E> left = parent.childs.get(pos - 1);
+
+        // Desplazar en el hijo actual
+        for (int i = child.count; i > 0; i--) {
+            child.keys.set(i, child.keys.get(i - 1));
+            child.childs.set(i + 1, child.childs.get(i));
+        }
+        child.childs.set(1, child.childs.get(0));
+
+        // Traer clave del padre
+        child.keys.set(0, parent.keys.get(pos - 1));
+        child.childs.set(0, left.childs.get(left.count));
+
+        // Subir clave del hermano izquierdo al padre
+        parent.keys.set(pos - 1, left.keys.get(left.count - 1));
+
+        left.keys.set(left.count - 1, null);
+        left.childs.set(left.count, null);
+        left.count--;
+        child.count++;
+    }
+
+    // Intentar prestar del hermano derecho
+    else if (pos < parent.count && parent.childs.get(pos + 1).count >= orden / 2) {
+        BNode<E> right = parent.childs.get(pos + 1);
+
+        // Traer clave del padre
+        child.keys.set(child.count++, parent.keys.get(pos));
+        child.childs.set(child.count, right.childs.get(0));
+
+        // Subir primera clave del hermano al padre
+        parent.keys.set(pos, right.keys.get(0));
+
+        // Desplazar el hermano derecho
+        for (int i = 0; i < right.count - 1; i++) {
+            right.keys.set(i, right.keys.get(i + 1));
+            right.childs.set(i, right.childs.get(i + 1));
+        }
+        right.childs.set(right.count - 1, right.childs.get(right.count));
+        right.keys.set(right.count - 1, null);
+        right.childs.set(right.count, null);
+        right.count--;
+    }
+
+    // Si no se puede prestar, fusionar
+    else {
+        if (pos < parent.count) {
+            merge(parent, pos);
+        } else {
+            merge(parent, pos - 1);
+        }
+    }
+}
+
+//EJERCICIO 03
+
 }
 
     
