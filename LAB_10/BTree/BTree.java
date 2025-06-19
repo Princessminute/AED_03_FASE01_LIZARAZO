@@ -1,5 +1,11 @@
 package LAB_10.BTree;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class BTree<E extends Comparable<E>> {
     private BNode<E> root;
     private int orden;
@@ -97,7 +103,7 @@ public class BTree<E extends Comparable<E>> {
 
         return median;
     }
-
+//ACTIVIDAD 03
     @Override
 public String toString() {
     StringBuilder s = new StringBuilder();
@@ -138,6 +144,8 @@ private void writeTree(BNode<E> current, StringBuilder sb) {
     }
 }
 
+
+//EJERCICIO 01
 public boolean search(E cl) {
     return searchRecursive(this.root, cl);
 }
@@ -341,7 +349,131 @@ private void fixChild(BNode<E> parent, int pos) {
 }
 
 //EJERCICIO 03
+public static BTree<Integer> building_BTree(String path) {
+    Map<Integer, BNode<Integer>> nodos = new HashMap<>();
+    Map<Integer, Integer> niveles = new HashMap<>();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        int orden = Integer.parseInt(reader.readLine().trim());
+        BTree<Integer> tree = new BTree<>(orden);
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] partes = line.trim().split(",");
+            if (partes.length < 3) {
+                throw new ItemNoFound("Línea malformada: " + line);
+            }
+
+            int nivel = Integer.parseInt(partes[0]);
+            int id = Integer.parseInt(partes[1]);
+
+            BNode<Integer> nodo = new BNode<>(orden);
+            nodo.idNode = id;
+            nodo.count = partes.length - 2;
+
+            for (int i = 2; i < partes.length; i++) {
+                int clave = Integer.parseInt(partes[i]);
+                nodo.keys.set(i - 2, clave);
+            }
+
+            nodos.put(id, nodo);
+            niveles.put(id, nivel);
+        }
+
+        // Reconstruir jerarquía
+        for (Map.Entry<Integer, BNode<Integer>> entry : nodos.entrySet()) {
+            int id = entry.getKey();
+            BNode<Integer> nodo = entry.getValue();
+            int nivel = niveles.get(id);
+
+            if (nivel == 0) {
+                tree.root = nodo;
+            } else {
+                // Buscar el padre: tiene nivel - 1 y lo tiene como hijo esperado
+                for (Map.Entry<Integer, BNode<Integer>> candidato : nodos.entrySet()) {
+                    int nivelPadre = niveles.get(candidato.getKey());
+                    if (nivelPadre == nivel - 1) {
+                        BNode<Integer> padre = candidato.getValue();
+
+                        // Verifica si este nodo puede ser hijo
+                        for (int i = 0; i <= padre.count; i++) {
+                            if (padre.childs.get(i) == null) {
+                                padre.childs.set(i, nodo);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validar estructura
+        if (!validarBTree(tree)) {
+            throw new ItemNoFound("El árbol cargado no cumple con las propiedades de BTree.");
+        }
+
+        return tree;
+
+    } catch (IOException e) {
+        throw new RuntimeException("Error al leer el archivo: " + e.getMessage());
+    } catch (NumberFormatException e) {
+        throw new ItemNoFound("Formato numérico incorrecto en archivo.");
+    }
+}
+
+private static boolean validarBTree(BTree<Integer> tree) {
+    return validarRecursivo(tree.root, tree.orden);
+}
+
+private static boolean validarRecursivo(BNode<Integer> nodo, int orden) {
+    if (nodo == null) return true;
+
+    if (nodo.count > orden - 1 || nodo.count < (nodo == nodo.childs.get(0) ? 1 : (orden / 2 - 1))) {
+        return false;
+    }
+
+    for (int i = 0; i <= nodo.count; i++) {
+        if (nodo.childs.get(i) != null) {
+            if (!validarRecursivo(nodo.childs.get(i), orden)) return false;
+        }
+    }
+    return true;
+}
+
+//EJERCICIO 04
+public String buscarNombre(int codigo) {
+    return buscarNombreRecursivo(this.root, codigo);
+}
+
+private String buscarNombreRecursivo(BNode<E> current, int codigo) {
+    if (current == null) return "No encontrado";
+
+    for (int i = 0; i < current.count; i++) {
+        E elemento = current.keys.get(i);
+        if (elemento != null) {
+            RegistroEstudiante est = (RegistroEstudiante) elemento; // 🔁 CAST
+            if (est.getCodigo() == codigo) return est.getNombre();
+            if (codigo < est.getCodigo()) {
+                return buscarNombreRecursivo(current.childs.get(i), codigo);
+            }
+        }
+    }
+    return buscarNombreRecursivo(current.childs.get(current.count), codigo);
+}
+
+public static void main(String[] args) {
+    try {
+        BTree<Integer> arbol = BTree.building_BTree("/Users/camilalizarazomares/Desktop/AED03/AED_03_FASE01_LIZARAZO/LAB_10/arbolB.txt");
+
+
+        System.out.println("Árbol cargado correctamente:");
+        System.out.println(arbol);
+    } catch (ItemNoFound e) {
+        System.err.println("Error: " + e.getMessage());
+    }
+}
 
 }
+
 
     
