@@ -37,7 +37,7 @@ public class BTree<E extends Comparable<E>> {
             this.root = pnew;
         }
     }
-
+/* 
     private E push(BNode<E> current, E cl) {
         if (current == null) {
             up = true;
@@ -65,7 +65,39 @@ public class BTree<E extends Comparable<E>> {
             return mediana;
         }
     }
+*/
 
+private E push(BNode<E> current, E cl) {
+    if (current == null) {
+        System.out.println("Nodo nulo alcanzado. Se retorna la clave como mediana: " + cl);
+        up = true;
+        nDes = null;
+        return cl;
+    } else {
+        System.out.println("Buscando posición para insertar clave " + cl + " en nodo " + current.idNode);
+        BNode.SearchResult result = current.searchNode(cl);
+        if (result.found()) {
+            System.out.println("La clave " + cl + " ya existe. No se inserta.");
+            up = false;
+            return null;
+        }
+
+        E mediana = push(current.childs.get(result.position()), cl);
+        if (up) {
+            if (current.nodeFull(this.orden - 1)) {
+                System.out.println("El nodo " + current.idNode + " está lleno. Se divide.");
+                mediana = dividedNode(current, mediana, result.position());
+            } else {
+                System.out.println("Insertando la clave " + mediana + " en el nodo " + current.idNode + " en la posición " + result.position());
+                up = false;
+                putNode(current, mediana, nDes, result.position());
+            }
+        }
+        return mediana;
+    }
+}
+
+/* 
     private void putNode(BNode<E> current, E cl, BNode<E> rd, int k) {
         for (int i = current.count - 1; i >= k; i--) {
             current.keys.set(i + 1, current.keys.get(i));
@@ -76,7 +108,21 @@ public class BTree<E extends Comparable<E>> {
         current.childs.set(k + 1, rd);
         current.count++;
     }
+*/
 
+
+private void putNode(BNode<E> current, E cl, BNode<E> rd, int k) {
+    System.out.println("Insertando clave " + cl + " en la posición " + k + " del nodo " + current.idNode);
+    for (int i = current.count - 1; i >= k; i--) {
+        current.keys.set(i + 1, current.keys.get(i));
+        current.childs.set(i + 2, current.childs.get(i + 1));
+    }
+    current.keys.set(k, cl);
+    current.childs.set(k + 1, rd);
+    current.count++;
+}
+
+/* 
     private E dividedNode(BNode<E> current, E cl, int k) {
         BNode<E> rd = nDes;
         int i, posMdna;
@@ -103,7 +149,41 @@ public class BTree<E extends Comparable<E>> {
 
         return median;
     }
+
+    */
+
+
+    private E dividedNode(BNode<E> current, E cl, int k) {
+    System.out.println("Dividiendo nodo " + current.idNode + " para insertar clave " + cl);
+    BNode<E> rd = nDes;
+    int i, posMdna;
+    posMdna = (k <= this.orden / 2) ? this.orden / 2 : (this.orden / 2 + 1);
+    nDes = new BNode<>(this.orden);
+
+    for (i = posMdna; i < this.orden - 1; i++) {
+        nDes.keys.set(i - posMdna, current.keys.get(i));
+        nDes.childs.set(i - posMdna + 1, current.childs.get(i + 1));
+    }
+
+    nDes.count = (this.orden - 1) - posMdna;
+    current.count = posMdna;
+
+    if (k <= this.orden / 2) {
+        putNode(current, cl, rd, k);
+    } else {
+        putNode(nDes, cl, rd, k - posMdna);
+    }
+
+    E median = current.keys.get(current.count - 1);
+    System.out.println("La mediana que subirá es: " + median);
+    nDes.childs.set(0, current.childs.get(current.count));
+    current.count--;
+
+    return median;
+}
+
 //ACTIVIDAD 03
+/*
     @Override
 public String toString() {
     StringBuilder s = new StringBuilder();
@@ -143,6 +223,51 @@ private void writeTree(BNode<E> current, StringBuilder sb) {
         writeTree(current.childs.get(i), sb);
     }
 }
+ */
+
+
+
+
+ @Override
+public String toString() {
+    StringBuilder s = new StringBuilder();
+    if (isEmpty()) {
+        s.append("El árbol B está vacío...\n");
+    } else {
+        writeTree(this.root, s);
+    }
+    return s.toString();
+}
+
+private void writeTree(BNode<E> current, StringBuilder sb) {
+    if (current == null) return;
+
+    // Mostrar claves del nodo actual
+    sb.append("Id.Nodo: ").append(current.idNode).append(" | Claves: (");
+    for (int i = 0; i < current.count; i++) {
+        sb.append(current.keys.get(i));
+        if (i < current.count - 1) sb.append(", ");
+    }
+    sb.append(")");
+
+    // Mostrar los ID de los hijos no nulos
+    sb.append(" | Hijos: [");
+    boolean hayHijos = false;
+    for (int i = 0; i <= current.count; i++) {
+        BNode<E> child = current.childs.get(i);
+        if (child != null) {
+            if (hayHijos) sb.append(", ");
+            sb.append(child.idNode);
+            hayHijos = true;
+        }
+    }
+    sb.append("]\n");
+
+    // Llamada recursiva a cada hijo
+    for (int i = 0; i <= current.count; i++) {
+        writeTree(current.childs.get(i), sb);
+    }
+}
 
 
 //EJERCICIO 01
@@ -165,6 +290,24 @@ private boolean searchRecursive(BNode<E> current, E cl) {
 
 //EJERCICIO 02.
 public void remove(E cl) {
+    System.out.println("\nIniciando eliminación de clave: " + cl);
+    if (isEmpty()) {
+        System.out.println("El árbol está vacío. No se puede eliminar.");
+        return;
+    }
+    removeRecursive(this.root, cl);
+
+    if (root.count == 0 && root.childs.get(0) != null) {
+        System.out.println("Raíz vacía. Promoviendo hijo izquierdo como nueva raíz.");
+        root = root.childs.get(0);
+    } else if (root.count == 0) {
+        System.out.println("Raíz vacía. El árbol ahora está vacío.");
+        root = null;
+    }
+}
+
+/* 
+public void remove(E cl) {
     if (isEmpty()) {
         System.out.println("El árbol está vacío.");
         return;
@@ -179,7 +322,8 @@ public void remove(E cl) {
         root = null; // árbol quedó vacío
     }
 }
-
+*/
+/* 
 private void removeRecursive(BNode<E> node, E cl) {
     BNode.SearchResult result = node.searchNode(cl);
 
@@ -230,6 +374,61 @@ private void removeRecursive(BNode<E> node, E cl) {
         removeRecursive(node.childs.get(pos), cl);
     }
 }
+    */
+
+    private void removeRecursive(BNode<E> node, E cl) {
+    BNode.SearchResult result = node.searchNode(cl);
+
+    if (result.found()) {
+        System.out.println("Clave " + cl + " encontrada en el nodo " + node.idNode + " en posición " + result.position());
+
+        if (isLeaf(node)) {
+            System.out.println("El nodo es hoja. Eliminando directamente la clave.");
+            for (int i = result.position(); i < node.count - 1; i++) {
+                node.keys.set(i, node.keys.get(i + 1));
+            }
+            node.keys.set(node.count - 1, null);
+            node.count--;
+        } else {
+            System.out.println("El nodo no es hoja. Se requiere reemplazo con predecesor o sucesor.");
+            BNode<E> predChild = node.childs.get(result.position());
+            BNode<E> succChild = node.childs.get(result.position() + 1);
+
+            if (predChild.count >= orden / 2) {
+                E predecessor = getMax(predChild);
+                System.out.println("Usando predecesor " + predecessor + " para reemplazar a " + cl);
+                node.keys.set(result.position(), predecessor);
+                removeRecursive(predChild, predecessor);
+            } else if (succChild.count >= orden / 2) {
+                E successor = getMin(succChild);
+                System.out.println("Usando sucesor " + successor + " para reemplazar a " + cl);
+                node.keys.set(result.position(), successor);
+                removeRecursive(succChild, successor);
+            } else {
+                System.out.println("Ningún hijo tiene suficientes claves. Fusionando nodos.");
+                merge(node, result.position());
+                removeRecursive(predChild, cl);
+            }
+        }
+    } else {
+        int pos = result.position();
+        BNode<E> child = node.childs.get(pos);
+
+        if (child == null) {
+            System.out.println("Clave " + cl + " no se encontró. Descenso nulo.");
+            return;
+        }
+
+        System.out.println("Clave no está en este nodo. Descendiendo al hijo " + child.idNode);
+
+        if (child.count < orden / 2) {
+            System.out.println("Hijo con claves mínimas. Intentando rotar o fusionar.");
+            fixChild(node, pos);
+        }
+        removeRecursive(node.childs.get(pos), cl);
+    }
+}
+
 private boolean isLeaf(BNode<E> node) {
     for (BNode<E> child : node.childs) {
         if (child != null) return false;
@@ -288,7 +487,7 @@ private void merge(BNode<E> parent, int pos) {
     parent.childs.set(parent.count, null);
     parent.count--;
 }
-
+/* */
 private void fixChild(BNode<E> parent, int pos) {
     BNode<E> child = parent.childs.get(pos);
 
